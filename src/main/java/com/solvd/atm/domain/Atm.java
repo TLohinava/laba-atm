@@ -7,7 +7,7 @@ public class Atm {
 
     private Long id;
     private Address address;
-    private Map<String, BigDecimal> atmBalance;
+    private Map<String, BigDecimal> balance;
 
     public Long getId() {
         return id;
@@ -25,11 +25,11 @@ public class Atm {
         this.address = address;
     }
 
-    public Map<String, BigDecimal> getAtmBalance() {
-        return atmBalance;
+    public Map<String, BigDecimal> getBalance() {
+        return balance;
     }
 
-    public void setAtmBalance(Map<String, BigDecimal> atmBalance) {
-        this.atmBalance = atmBalance;
+    public void setBalance(Map<String, BigDecimal> balance) {
+        this.balance = balance;
     }
 }
