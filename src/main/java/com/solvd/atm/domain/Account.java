@@ -1,19 +1,27 @@
 package com.solvd.atm.domain;
 
-import java.math.BigInteger;
 import java.util.List;
 
 public class Account {
 
-    private BigInteger accountNumber;
+    private Long id;
+    private String number;
     private List<Card> cards;
 
-    public BigInteger getAccountNumber() {
-        return accountNumber;
+    public Long getId() {
+        return id;
     }
 
-    public void setAccountNumber(BigInteger accountNumber) {
-        this.accountNumber = accountNumber;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public List<Card> getCards() {

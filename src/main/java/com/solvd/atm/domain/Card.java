@@ -1,18 +1,27 @@
 package com.solvd.atm.domain;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 public class Card {
 
-    private BigInteger number;
+    private Long id;
+    private Long number;
     private String currency;
-    private Long balance;
+    private BigDecimal balance;
 
-    public BigInteger getNumber() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getNumber() {
         return number;
     }
 
-    public void setNumber(BigInteger number) {
+    public void setNumber(Long number) {
         this.number = number;
     }
 
@@ -24,11 +33,11 @@ public class Card {
         this.currency = currency;
     }
 
-    public Long getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(Long balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 }
