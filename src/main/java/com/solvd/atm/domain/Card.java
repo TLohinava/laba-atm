@@ -4,9 +4,9 @@ import java.math.BigInteger;
 
 public class Card {
 
-    BigInteger number;
-    String currency;
-    Long balance;
+    private BigInteger number;
+    private String currency;
+    private Long balance;
 
     public BigInteger getNumber() {
         return number;

@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Account {
 
-    BigInteger accountNumber;
-    List<Card> cards;
+    private BigInteger accountNumber;
+    private List<Card> cards;
 
     public BigInteger getAccountNumber() {
         return accountNumber;

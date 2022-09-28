@@ -4,9 +4,11 @@ import java.util.List;
 
 public class Bank {
 
-    String name;
-    List<Atm> atms;
-    List <Client> clients;
+    private String name;
+    private List<Atm> atms;
+    private List <Client> clients;
+    private Address address;
+    private Integer branchNumber;
 
     public String getName() {
         return name;
@@ -30,5 +32,21 @@ public class Bank {
 
     public void setClients(List<Client> clients) {
         this.clients = clients;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Integer getBranchNumber() {
+        return branchNumber;
+    }
+
+    public void setBranchNumber(Integer branchNumber) {
+        this.branchNumber = branchNumber;
     }
 }

@@ -2,9 +2,9 @@ package com.solvd.atm.domain;
 
 public class Client {
 
-    String name;
-    String surname;
-    Account account;
+    private String name;
+    private String surname;
+    private Account account;
 
     public String getName() {
         return name;

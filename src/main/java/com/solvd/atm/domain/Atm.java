@@ -1,16 +1,17 @@
 package com.solvd.atm.domain;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 public class Atm {
 
-    Map<String, Long> atmBalance;
+    private Map<String, BigDecimal> atmBalance;
 
-    public Map<String, Long> getAtmBalance() {
+    public Map<String, BigDecimal> getAtmBalance() {
         return atmBalance;
     }
 
-    public void setAtmBalance(Map<String, Long> atmBalance) {
+    public void setAtmBalance(Map<String, BigDecimal> atmBalance) {
         this.atmBalance = atmBalance;
     }
 }
