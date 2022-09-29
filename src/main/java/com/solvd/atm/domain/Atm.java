@@ -3,11 +3,16 @@ package com.solvd.atm.domain;
 import java.math.BigDecimal;
 import java.util.Map;
 
-public class Atm {
+public class Atm implements ICheck{
 
     private Long id;
     private Address address;
-    private Map<String, BigDecimal> balance;
+    private Map<CurrencyType, BigDecimal> balance;
+
+    @Override
+    public Boolean checkBalance(BigDecimal sum, CurrencyType type) {
+        return sum.compareTo(this.getBalance().get(type)) <= 0;
+    }
 
     public Long getId() {
         return id;
@@ -25,11 +30,11 @@ public class Atm {
         this.address = address;
     }
 
-    public Map<String, BigDecimal> getBalance() {
+    public Map<CurrencyType, BigDecimal> getBalance() {
         return balance;
     }
 
-    public void setBalance(Map<String, BigDecimal> balance) {
+    public void setBalance(Map<CurrencyType, BigDecimal> balance) {
         this.balance = balance;
     }
 }
