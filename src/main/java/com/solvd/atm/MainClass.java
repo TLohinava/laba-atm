@@ -23,12 +23,6 @@ public class MainClass {
 
     Card card = new Card();
     card.setBalance(new BigDecimal(1000));
-    card.setCurrency(CurrencyType.BYN);
-
-    BigDecimal sum = Utils.enterSum();
-
-    System.out.println(card.checkBalance(sum, CurrencyType.BYN));
-    System.out.println(atm.checkBalance(sum, CurrencyType.BYN));
-
+    card.setCurrencyType(CurrencyType.BYN);
     }
 }

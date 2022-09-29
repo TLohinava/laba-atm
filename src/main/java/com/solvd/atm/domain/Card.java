@@ -2,16 +2,22 @@ package com.solvd.atm.domain;
 
 import java.math.BigDecimal;
 
-public class Card implements ICheck{
+public class Card implements ICheck, IWithdraw {
 
     private Long id;
     private Long number;
-    private CurrencyType currency;
+    private CurrencyType currencyType;
     private BigDecimal balance;
 
     @Override
     public Boolean checkBalance(BigDecimal sum, CurrencyType type) {
-        return sum.compareTo(this.getBalance()) <= 0 && type.equals(this.getCurrency());
+        return sum.compareTo(this.getBalance()) <= 0 && type.equals(this.getCurrencyType());
+    }
+
+    @Override
+    public void withdraw(BigDecimal sum) {
+        BigDecimal withdrawnSum = this.getBalance().subtract(sum);
+        this.setBalance(withdrawnSum);
     }
 
     public Long getId() {
@@ -30,12 +36,12 @@ public class Card implements ICheck{
         this.number = number;
     }
 
-    public CurrencyType getCurrency() {
-        return currency;
+    public CurrencyType getCurrencyType() {
+        return currencyType;
     }
 
-    public void setCurrency(CurrencyType currency) {
-        this.currency = currency;
+    public void setCurrencyType(CurrencyType currencyType) {
+        this.currencyType = currencyType;
     }
 
     public BigDecimal getBalance() {
