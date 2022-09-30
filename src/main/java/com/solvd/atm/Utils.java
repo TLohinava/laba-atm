@@ -15,8 +15,8 @@ public class Utils {
         System.out.println("Please enter the required sum: ");
         if (scanner.hasNextBigDecimal()) {
             sum = scanner.nextBigDecimal();
-            if (sum.compareTo(BigDecimal.ZERO) == 0) {
-                System.out.println("Sorry, the sum cannot be 0. ");
+            if (sum.compareTo(BigDecimal.ZERO) <= 0) {
+                System.out.println("Sorry, the sum cannot be 0 or less. ");
                 sum = enterSum();
             }
         } else {
