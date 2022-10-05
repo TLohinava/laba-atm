@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace ="com.solvd.atm.persistence.AccountRepository">
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+        insert into accounts number value #{number}
+    </insert>
+
+    <select id= "read" resultMap="AccountResultMap">
+        select id, number from accounts where id = #{id}
+    </select>
+
+    <resultMap id="AccountResultMap" type="com.solvd.atm.domain.Account" autoMapping="false">
+        <id property="id" column="id"/>
+        <result property= "number" column="number"/>
+        <collection property="cards" resultMap="com.solvd.atm.persistence.CardRepository.CardResultMap"/>
+    </resultMap>
+
+    <update id= "update" useGeneratedKeys="false">
+        update accounts set number = #{number} where id = #{id}
+    </update>
+
+    <delete id= "delete">
+        delete from accounts where id = #{id}
+    </delete>
+</mapper>

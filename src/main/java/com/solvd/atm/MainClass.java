@@ -1,6 +1,8 @@
 package com.solvd.atm;
 
 import com.solvd.atm.domain.*;
+import com.solvd.atm.service.AccountService;
+import com.solvd.atm.service.impl.AccountServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -93,5 +95,8 @@ public class MainClass {
         alfaBank.setAtms(alfaAtms);
         List<Client> alfaClients = List.of(client1, client2);
         alfaBank.setClients(alfaClients);
+
+        AccountService accountService = new AccountServiceImpl();
+        accountService.create(account1);
     }
 }
