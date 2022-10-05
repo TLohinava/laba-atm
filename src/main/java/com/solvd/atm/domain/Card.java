@@ -6,8 +6,8 @@ public class Card {
 
     private Long id;
     private Long number;
-    private String currency;
     private BigDecimal balance;
+    private CurrencyType currencyType;
 
     public Long getId() {
         return id;
@@ -25,12 +25,12 @@ public class Card {
         this.number = number;
     }
 
-    public String getCurrency() {
-        return currency;
+    public CurrencyType getCurrencyType() {
+        return currencyType;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setCurrencyType(CurrencyType currencyType) {
+        this.currencyType = currencyType;
     }
 
     public BigDecimal getBalance() {
