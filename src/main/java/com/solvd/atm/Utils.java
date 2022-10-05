@@ -35,5 +35,8 @@ public class Utils {
             card.withdraw(sum);
             atm.withdraw(sum);
         }
+
+    public static void useATM(IUseATM useATM, Card card) {
+        useATM.getMenu(card);
     }
 }

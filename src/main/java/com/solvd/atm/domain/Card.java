@@ -6,8 +6,9 @@ public class Card implements ICheck, IWithdraw {
 
     private Long id;
     private Long number;
-    private CurrencyType currencyType;
+    private Integer pin;
     private BigDecimal balance;
+    private CurrencyType currencyType;
 
     @Override
     public Boolean checkBalance(BigDecimal sum, CurrencyType type) {
@@ -34,6 +35,14 @@ public class Card implements ICheck, IWithdraw {
 
     public void setNumber(Long number) {
         this.number = number;
+    }
+
+    public Integer getPin() {
+        return pin;
+    }
+
+    public void setPin(Integer pin) {
+        this.pin = pin;
     }
 
     public CurrencyType getCurrencyType() {
