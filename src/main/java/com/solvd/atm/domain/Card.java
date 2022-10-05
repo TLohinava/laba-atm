@@ -7,8 +7,8 @@ public class Card {
     private Long id;
     private Long number;
     private Integer pin;
-    private CurrencyType currencyType;
     private BigDecimal balance;
+    private CurrencyType currencyType;
 
     public Long getId() {
         return id;
