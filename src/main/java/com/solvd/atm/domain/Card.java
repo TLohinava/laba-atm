@@ -6,6 +6,7 @@ public class Card {
 
     private Long id;
     private Long number;
+    private Integer pin;
     private BigDecimal balance;
     private CurrencyType currencyType;
 
@@ -23,6 +24,14 @@ public class Card {
 
     public void setNumber(Long number) {
         this.number = number;
+    }
+
+    public Integer getPin() {
+        return pin;
+    }
+
+    public void setPin(Integer pin) {
+        this.pin = pin;
     }
 
     public CurrencyType getCurrencyType() {

@@ -27,26 +27,31 @@ public class MainClass {
 
         Card card1 = new Card();
         card1.setNumber(535140215456175656L);
+        card1.setPin(1234);
         card1.setBalance(BigDecimal.valueOf(350));
         card1.setCurrencyType(CurrencyType.valueOf("EUR"));
 
         Card card2 = new Card();
         card2.setNumber(5351402154234567L);
+        card2.setPin(5678);
         card2.setBalance(BigDecimal.valueOf(9000));
         card2.setCurrencyType(CurrencyType.valueOf("BYN"));
 
         Card card3 = new Card();
         card3.setNumber(5351402154234888L);
+        card3.setPin(8901);
         card3.setBalance(BigDecimal.valueOf(600));
         card3.setCurrencyType(CurrencyType.valueOf("BYN"));
 
         Card card4 = new Card();
         card4.setNumber(5351402154555567L);
+        card4.setPin(1267);
         card4.setBalance(BigDecimal.valueOf(1200));
         card4.setCurrencyType(CurrencyType.valueOf("USD"));
 
         Card card5 = new Card();
         card5.setNumber(5351402144434567L);
+        card5.setPin(4289);
         card5.setBalance(BigDecimal.valueOf(33000));
         card5.setCurrencyType(CurrencyType.valueOf("RUB"));
 
@@ -93,5 +98,6 @@ public class MainClass {
         alfaBank.setAtms(alfaAtms);
         List<Client> alfaClients = List.of(client1, client2);
         alfaBank.setClients(alfaClients);
+
     }
 }
