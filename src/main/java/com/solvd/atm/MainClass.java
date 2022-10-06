@@ -24,5 +24,12 @@ public class MainClass {
     Card card = new Card();
     card.setBalance(new BigDecimal(1000));
     card.setCurrencyType(CurrencyType.BYN);
+
+    Map<BigDecimal, BigDecimal> map = new HashMap<>();
+    map.put(new BigDecimal(10), new BigDecimal(15));
+    map.put(new BigDecimal(20), new BigDecimal(10));
+    map.put(new BigDecimal(50), new BigDecimal(10));
+
+    Utils.chooseDenomination(map, Utils.enterSum());
     }
 }
