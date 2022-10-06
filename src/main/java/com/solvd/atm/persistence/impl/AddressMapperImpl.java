@@ -34,10 +34,10 @@ public class AddressMapperImpl implements AddressRepository {
     }
 
     @Override
-    public void deleteById(Long deleteId) {
+    public void delete(Long deleteId) {
         try (SqlSession sqlSession = MyBatisConfig.getSqlSessionFactory().openSession(true)) {
             AddressRepository addressRepository = sqlSession.getMapper(AddressRepository.class);
-            addressRepository.deleteById(deleteId);
+            addressRepository.delete(deleteId);
         }
     }
 }

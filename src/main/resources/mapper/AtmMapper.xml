@@ -13,7 +13,7 @@
     <resultMap id="AtmResultMap" type="com.solvd.atm.domain.Atm" autoMapping="false">
         <id property="id" column="id"/>
         <result property= "balance" column="balance"/>
-        <result property= "currency_type" column="currencyType"/>
+        <result property= "currencyType" column="currency_type"/>
         <association property="bank" resultMap="com.solvd.atm.persistence.BankRepository.BankResultMap"/>
         <association property="address" resultMap="com.solvd.atm.persistence.AddressRepository.AddressResultMap"/>
     </resultMap>

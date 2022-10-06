@@ -32,4 +32,13 @@ public class Atm {
     public void setBalance(Map<CurrencyType, BigDecimal> balance) {
         this.balance = balance;
     }
+
+    @Override
+    public String toString() {
+        return "Atm{" +
+                "id=" + id +
+                ", address=" + address +
+                ", balance=" + balance +
+                '}';
+    }
 }

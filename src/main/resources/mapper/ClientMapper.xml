@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace ="com.solvd.atm.persistence.ClientRepository">
     <insert id="create" keyColumn="id" keyProperty="client.id" useGeneratedKeys="true">
-        insert into clients (account_id, name, surname) values (#{accountId}, #{name}, #{surname})
+        insert into clients (account_id, name, surname) values (#{accountId}, #{client.name}, #{surname})
     </insert>
 
     <select id= "read" resultMap="ClientResultMap">
@@ -17,7 +17,7 @@
     </resultMap>
 
     <update id= "update" useGeneratedKeys="false">
-        update clients set account_id = #{accountId}, name = #{name}, surname = #{surname} where id = #{id}
+        update clients set name = #{name}, surname = #{surname} where id = #{id}
     </update>
 
     <delete id= "delete">

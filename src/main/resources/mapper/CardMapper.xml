@@ -2,28 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace ="com.solvd.atm.persistence.CardRepository">
     <insert id="create" keyColumn="id" keyProperty="card.id" useGeneratedKeys="true">
-        insert into cards (account_id, number, balance, currency_type)
-        values (#{card.accountId}, #{card.number}, #{card.balance}, #{card.currencyType})
+        insert into cards (account_id, number, pin, balance, currency_type)
+        values (#{accountId}, #{card.number}, #{card.pin}, #{card.balance}, #{card.currencyType})
     </insert>
 
     <select id= "read" resultMap="CardResultMap">
-        select id, account_id, number, balance, currency_type from cards where id = #{id}
+        select id, account_id, number, pin, balance, currency_type from cards where id = #{id}
     </select>
 
     <resultMap id="CardResultMap" type="com.solvd.atm.domain.Card" autoMapping="false">
         <id property="id" column="id"/>
-        <result property= "account_id" column="accountId"/>
         <result property= "number" column="number"/>
         <result property= "balance" column="balance"/>
-        <result property= "currency_type" column="currencyType"/>
+        <result property= "pin" column="pin"/>
+        <result property= "currencyType" column="currency_type"/>
     </resultMap>
 
     <update id= "update" useGeneratedKeys="false">
-        update cards set account_id = #{accountId}, number = #{number}, balance = #{balance},
-        currency_type = #{currencyType} where id = #{id}
+        update cards set number = #{number}, pin = #{pin},
+        balance = #{balance}, currency_type = #{currencyType} where id = #{id}
     </update>
 
-    <delete id= "delete">
+    <delete id= "deleteById">
         delete from cards where id = #{id}
     </delete>
 </mapper>

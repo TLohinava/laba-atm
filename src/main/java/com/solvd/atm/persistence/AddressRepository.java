@@ -12,6 +12,6 @@ public interface AddressRepository {
 
     void update(Address address);
 
-    void deleteById(Long deleteId);
+    void delete(Long deleteId);
 
 }

@@ -1,8 +1,8 @@
 package com.solvd.atm;
 
 import com.solvd.atm.domain.*;
-import com.solvd.atm.service.AccountService;
-import com.solvd.atm.service.impl.AccountServiceImpl;
+import com.solvd.atm.service.*;
+import com.solvd.atm.service.impl.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,6 +18,7 @@ public class MainClass {
     public static void main(String[] args) {
 
         Address address1 = new Address();
+        address1.setId(1L);
         address1.setCity("Minsk");
         address1.setStreet("Kolasa");
         address1.setHouse(15);
@@ -28,32 +29,38 @@ public class MainClass {
         address2.setHouse(32);
 
         Card card1 = new Card();
-        card1.setNumber(535140215456175656L);
+        card1.setId(4L);
+        card1.setNumber(5351402154561756L);
+        card1.setPin(1234);
         card1.setBalance(BigDecimal.valueOf(350));
-        card1.setCurrencyType(CurrencyType.valueOf("EUR"));
+        card1.setCurrencyType(CurrencyType.valueOf("BYN"));
 
         Card card2 = new Card();
         card2.setNumber(5351402154234567L);
+        card2.setPin(5678);
         card2.setBalance(BigDecimal.valueOf(9000));
         card2.setCurrencyType(CurrencyType.valueOf("BYN"));
 
         Card card3 = new Card();
         card3.setNumber(5351402154234888L);
+        card3.setPin(8901);
         card3.setBalance(BigDecimal.valueOf(600));
         card3.setCurrencyType(CurrencyType.valueOf("BYN"));
 
         Card card4 = new Card();
         card4.setNumber(5351402154555567L);
+        card4.setPin(1267);
         card4.setBalance(BigDecimal.valueOf(1200));
         card4.setCurrencyType(CurrencyType.valueOf("USD"));
 
         Card card5 = new Card();
         card5.setNumber(5351402144434567L);
+        card5.setPin(4289);
         card5.setBalance(BigDecimal.valueOf(33000));
         card5.setCurrencyType(CurrencyType.valueOf("RUB"));
 
         Account account1 = new Account();
-        account1.setNumber("BY06ALFA30128888777766665555");
+        account1.setNumber("BY06ALFA3012888877776666");
         List<Card> firstAccountCards = List.of(card1, card2);
         account1.setCards(firstAccountCards);
 
@@ -63,8 +70,9 @@ public class MainClass {
         account1.setCards(secondAccountCards);
 
         Client client1 = new Client();
+        client1.setId(1L);
         client1.setName("Olga");
-        client1.setSurname("Orlova");
+        client1.setSurname("OrlovaOrlova");
         client1.setAccount(account1);
 
         Client client2 = new Client();
@@ -96,7 +104,22 @@ public class MainClass {
         List<Client> alfaClients = List.of(client1, client2);
         alfaBank.setClients(alfaClients);
 
-        AccountService accountService = new AccountServiceImpl();
-        accountService.create(account1);
+//        AccountService accountService = new AccountServiceImpl();
+//        accountService.create(account2);
+
+//        AddressService addressService = new AddressServiceImpl();
+//        addressService.delete(1L);
+
+//        CardService cardService = new CardServiceImpl();
+//        System.out.println(cardService.read(3L));
+
+//        AtmService atmService = new AtmServiceImpl();
+//        atmService.create(1L, 1L, atm1);
+
+//        ClientService clientService = new ClientServiceImpl();
+//        clientService.update(client1);
+
+        BankService bankService = new BankServiceImpl();
+        bankService.create(alfaBank);
     }
 }
