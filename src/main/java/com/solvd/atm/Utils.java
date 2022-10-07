@@ -86,6 +86,7 @@ public class Utils {
             }
             options.add(option.trim());
         }
+        System.out.println("Available option for the entered sum:");
         options.forEach(r -> System.out.println((options.indexOf(r) + 1) + ". " + r));
         return options;
     }
@@ -105,5 +106,14 @@ public class Utils {
         return chosenOption;
     }
 
-
+    public static void updateMap(Map<BigDecimal, BigDecimal> map, BigDecimal sum) {
+        String option = chooseOptions(map, sum);
+        String[] optionArray = option.split(" ");
+        String[] innerArray;
+        for (String o : optionArray) {
+            innerArray = o.split("x");
+            map.replace(new BigDecimal(innerArray[0]), map.get(new BigDecimal(innerArray[0])).subtract(new BigDecimal(innerArray[1])));
+        }
+        System.out.println(map);
+    }
 }
