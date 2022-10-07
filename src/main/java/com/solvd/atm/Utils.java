@@ -38,7 +38,7 @@ public class Utils {
         }
     }
 
-    public static void chooseDenomination(Map<BigDecimal, BigDecimal> map, BigDecimal sum) {
+    public static List<String> chooseDenomination(Map<BigDecimal, BigDecimal> map, BigDecimal sum) {
         List<String> options = new ArrayList<>();
         String option = "";
         BigDecimal mapSum = new BigDecimal(0);
@@ -86,7 +86,24 @@ public class Utils {
             }
             options.add(option.trim());
         }
-
-        System.out.println(options);
+        options.forEach(r -> System.out.println((options.indexOf(r) + 1) + ". " + r));
+        return options;
     }
+
+    public static String chooseOptions(Map<BigDecimal, BigDecimal> map, BigDecimal sum) {
+        List<String> options = chooseDenomination(map, sum);
+        String chosenOption = "";
+        Scanner digit = new Scanner(System.in);
+        System.out.println("Please choose your option:");
+        int chosenDigit = digit.nextInt();
+        if ((options.size() >= chosenDigit) && (chosenDigit > 0)) {
+            chosenOption += options.get(chosenDigit - 1);
+        } else {
+            System.out.println("The option you've entered is not available. Please try again");
+            chooseOptions(map, sum);
+        }
+        return chosenOption;
+    }
+
+
 }
