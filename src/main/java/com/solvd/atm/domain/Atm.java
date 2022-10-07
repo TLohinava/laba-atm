@@ -12,8 +12,12 @@ public class Atm implements ICheck, IWithdraw {
 
     @Override
     public Boolean checkBalance(BigDecimal sum, CurrencyType currencyType) {
-//        return sum.compareTo(this.getBalance().get(currencyType)) <= 0;
-        return true;
+        BigDecimal atmBalance = new BigDecimal(0);
+        Map<BigDecimal, BigDecimal> currencyBalance = this.getBalance().get(currencyType);
+        for (Map.Entry<BigDecimal, BigDecimal> entry : currencyBalance.entrySet()) {
+            atmBalance = atmBalance.add(entry.getKey().multiply(entry.getValue()));
+        }
+        return sum.compareTo(atmBalance) <= 0;
     }
 
     @Override

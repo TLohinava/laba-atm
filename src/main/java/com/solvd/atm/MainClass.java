@@ -146,13 +146,5 @@ public class MainClass {
         alfaBank.setAtms(alfaAtms);
         List<Client> alfaClients = List.of(client1, client2);
         alfaBank.setClients(alfaClients);
-
-        Map<BigDecimal, BigDecimal> map = new HashMap<>();
-        map.put(new BigDecimal(10), new BigDecimal(10));
-        map.put(new BigDecimal(20), new BigDecimal(15));
-        map.put(new BigDecimal(50), new BigDecimal(10));
-
-        Utils.updateMap(map, Utils.enterSum());
-
     }
 }
