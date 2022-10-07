@@ -74,21 +74,70 @@ public class MainClass {
         client2.setSurname("Petrov");
         client2.setAccount(account2);
 
+        Map<BigDecimal, BigDecimal> bynDenominations1 = new HashMap<>();
+        bynDenominations1.put(BigDecimal.valueOf(5), BigDecimal.valueOf(100));
+        bynDenominations1.put(BigDecimal.valueOf(10), BigDecimal.valueOf(100));
+        bynDenominations1.put(BigDecimal.valueOf(20), BigDecimal.valueOf(100));
+        bynDenominations1.put(BigDecimal.valueOf(50), BigDecimal.valueOf(100));
+        bynDenominations1.put(BigDecimal.valueOf(100), BigDecimal.valueOf(100));
+
+        Map<BigDecimal, BigDecimal> bynDenominations2 = new HashMap<>();
+        bynDenominations2.put(BigDecimal.valueOf(5), BigDecimal.valueOf(50));
+        bynDenominations2.put(BigDecimal.valueOf(10), BigDecimal.valueOf(50));
+        bynDenominations2.put(BigDecimal.valueOf(20), BigDecimal.valueOf(100));
+        bynDenominations2.put(BigDecimal.valueOf(50), BigDecimal.valueOf(50));
+        bynDenominations2.put(BigDecimal.valueOf(100), BigDecimal.valueOf(100));
+
+        Map<BigDecimal, BigDecimal> rubDenominations1 = new HashMap<>();
+        rubDenominations1.put(BigDecimal.valueOf(50), BigDecimal.valueOf(100));
+        rubDenominations1.put(BigDecimal.valueOf(100), BigDecimal.valueOf(50));
+        rubDenominations1.put(BigDecimal.valueOf(200), BigDecimal.valueOf(10));
+        rubDenominations1.put(BigDecimal.valueOf(500), BigDecimal.valueOf(10));
+        rubDenominations1.put(BigDecimal.valueOf(1000), BigDecimal.valueOf(10));
+
+        Map<BigDecimal, BigDecimal> rubDenominations2 = new HashMap<>();
+        rubDenominations2.put(BigDecimal.valueOf(50), BigDecimal.valueOf(100));
+        rubDenominations2.put(BigDecimal.valueOf(100), BigDecimal.valueOf(50));
+        rubDenominations2.put(BigDecimal.valueOf(200), BigDecimal.valueOf(100));
+        rubDenominations2.put(BigDecimal.valueOf(500), BigDecimal.valueOf(50));
+        rubDenominations2.put(BigDecimal.valueOf(1000), BigDecimal.valueOf(50));
+
+        Map<BigDecimal, BigDecimal> usdDenominations1 = new HashMap<>();
+        usdDenominations1.put(BigDecimal.valueOf(5), BigDecimal.valueOf(50));
+        usdDenominations1.put(BigDecimal.valueOf(10), BigDecimal.valueOf(50));
+        usdDenominations1.put(BigDecimal.valueOf(20), BigDecimal.valueOf(50));
+        usdDenominations1.put(BigDecimal.valueOf(50), BigDecimal.valueOf(10));
+        usdDenominations1.put(BigDecimal.valueOf(100), BigDecimal.valueOf(10));
+
+        Map<BigDecimal, BigDecimal> usdDenominations2 = new HashMap<>();
+        usdDenominations2.put(BigDecimal.valueOf(5), BigDecimal.valueOf(60));
+        usdDenominations2.put(BigDecimal.valueOf(10), BigDecimal.valueOf(100));
+        usdDenominations2.put(BigDecimal.valueOf(20), BigDecimal.valueOf(30));
+        usdDenominations2.put(BigDecimal.valueOf(50), BigDecimal.valueOf(100));
+        usdDenominations2.put(BigDecimal.valueOf(100), BigDecimal.valueOf(20));
+
+        Map<BigDecimal, BigDecimal> eurDenominations1 = new HashMap<>();
+        eurDenominations1.put(BigDecimal.valueOf(5), BigDecimal.valueOf(100));
+        eurDenominations1.put(BigDecimal.valueOf(10), BigDecimal.valueOf(50));
+        eurDenominations1.put(BigDecimal.valueOf(20), BigDecimal.valueOf(100));
+        eurDenominations1.put(BigDecimal.valueOf(50), BigDecimal.valueOf(50));
+        eurDenominations1.put(BigDecimal.valueOf(100), BigDecimal.valueOf(50));
+
         Atm atm1 = new Atm();
         atm1.setAddress(address1);
-        Map<CurrencyType, BigDecimal> firstAtmBalance = new HashMap<>();
-        firstAtmBalance.put(CurrencyType.valueOf("BYN"), BigDecimal.valueOf(10000));
-        firstAtmBalance.put(CurrencyType.valueOf("RUB"), BigDecimal.valueOf(300000));
-        firstAtmBalance.put(CurrencyType.valueOf("USD"), BigDecimal.valueOf(22000));
-        firstAtmBalance.put(CurrencyType.valueOf("EUR"), BigDecimal.valueOf(14000));
+        Map<CurrencyType, Map<BigDecimal, BigDecimal>> firstAtmBalance = new HashMap<>();
+        firstAtmBalance.put(CurrencyType.valueOf("BYN"), bynDenominations1);
+        firstAtmBalance.put(CurrencyType.valueOf("RUB"), rubDenominations1);
+        firstAtmBalance.put(CurrencyType.valueOf("USD"), usdDenominations1);
+        firstAtmBalance.put(CurrencyType.valueOf("EUR"), eurDenominations1);
         atm1.setBalance(firstAtmBalance);
 
         Atm atm2 = new Atm();
         atm1.setAddress(address2);
-        Map<CurrencyType, BigDecimal> secondAtmBalance = new HashMap<>();
-        secondAtmBalance.put(CurrencyType.valueOf("BYN"), BigDecimal.valueOf(200000));
-        secondAtmBalance.put(CurrencyType.valueOf("RUB"), BigDecimal.valueOf(100000));
-        secondAtmBalance.put(CurrencyType.valueOf("USD"), BigDecimal.valueOf(5000));
+        Map<CurrencyType, Map<BigDecimal, BigDecimal>> secondAtmBalance = new HashMap<>();
+        secondAtmBalance.put(CurrencyType.valueOf("BYN"), bynDenominations2);
+        secondAtmBalance.put(CurrencyType.valueOf("RUB"), rubDenominations2);
+        secondAtmBalance.put(CurrencyType.valueOf("USD"), usdDenominations2);
         atm2.setBalance(secondAtmBalance);
 
         Bank alfaBank = new Bank();
