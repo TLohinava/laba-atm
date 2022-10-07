@@ -8,17 +8,18 @@ public class Atm implements ICheck, IWithdraw {
 
     private Long id;
     private Address address;
-    private Map<CurrencyType, BigDecimal> balance;
+    private Map<CurrencyType, Map<BigDecimal, BigDecimal>> balance;
 
     @Override
     public Boolean checkBalance(BigDecimal sum, CurrencyType currencyType) {
-        return sum.compareTo(this.getBalance().get(currencyType)) <= 0;
+//        return sum.compareTo(this.getBalance().get(currencyType)) <= 0;
+        return true;
     }
 
     @Override
     public void withdraw(BigDecimal sum) {
-        BigDecimal withdrawnSum = this.getBalance().get(CurrencyType.BYN).subtract(sum);
-        Map<CurrencyType, BigDecimal> map = new HashMap<>();
+        Map<BigDecimal, BigDecimal> withdrawnSum = this.getBalance().get(CurrencyType.BYN);
+        Map<CurrencyType, Map<BigDecimal, BigDecimal>> map = new HashMap<>();
         map.put(CurrencyType.BYN, withdrawnSum);
         this.setBalance(map);
     }
@@ -39,11 +40,11 @@ public class Atm implements ICheck, IWithdraw {
         this.address = address;
     }
 
-    public Map<CurrencyType, BigDecimal> getBalance() {
+    public Map<CurrencyType, Map<BigDecimal, BigDecimal>> getBalance() {
         return balance;
     }
 
-    public void setBalance(Map<CurrencyType, BigDecimal> balance) {
+    public void setBalance(Map<CurrencyType, Map<BigDecimal, BigDecimal>> balance) {
         this.balance = balance;
     }
 }
