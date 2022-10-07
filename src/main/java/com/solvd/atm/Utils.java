@@ -3,7 +3,6 @@ package com.solvd.atm;
 import com.solvd.atm.domain.Atm;
 import com.solvd.atm.domain.Card;
 import com.solvd.atm.domain.CurrencyType;
-import com.solvd.atm.domain.IUseATM;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

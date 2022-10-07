@@ -1,7 +1,8 @@
 package com.solvd.atm.domain;
 
+import com.solvd.atm.Utils;
+
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Atm implements ICheck, IWithdraw {
@@ -22,10 +23,8 @@ public class Atm implements ICheck, IWithdraw {
 
     @Override
     public void withdraw(BigDecimal sum) {
-        Map<BigDecimal, BigDecimal> withdrawnSum = this.getBalance().get(CurrencyType.BYN);
-        Map<CurrencyType, Map<BigDecimal, BigDecimal>> map = new HashMap<>();
-        map.put(CurrencyType.BYN, withdrawnSum);
-        this.setBalance(map);
+        Map<BigDecimal, BigDecimal> currentBalance = this.getBalance().get(CurrencyType.BYN);
+        Utils.updateMap(currentBalance, sum);
     }
 
     public Long getId() {
