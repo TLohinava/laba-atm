@@ -1,8 +1,8 @@
 package com.solvd.atm;
 
 import com.solvd.atm.domain.*;
-import com.solvd.atm.service.*;
-import com.solvd.atm.service.impl.*;
+import com.solvd.atm.service.AtmService;
+import com.solvd.atm.service.impl.AtmServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,7 +18,6 @@ public class MainClass {
     public static void main(String[] args) {
 
         Address address1 = new Address();
-        address1.setId(1L);
         address1.setCity("Minsk");
         address1.setStreet("Kolasa");
         address1.setHouse(15);
@@ -29,7 +28,6 @@ public class MainClass {
         address2.setHouse(32);
 
         Card card1 = new Card();
-        card1.setId(4L);
         card1.setNumber(5351402154561756L);
         card1.setPin(1234);
         card1.setBalance(BigDecimal.valueOf(350));
@@ -65,14 +63,13 @@ public class MainClass {
         account1.setCards(firstAccountCards);
 
         Account account2 = new Account();
-        account2.setNumber("BY04ALFA301433355567678989");
+        account2.setNumber("BY04ALFA3014333555676789");
         List<Card> secondAccountCards = List.of(card3, card4, card5);
         account1.setCards(secondAccountCards);
 
         Client client1 = new Client();
-        client1.setId(1L);
         client1.setName("Olga");
-        client1.setSurname("OrlovaOrlova");
+        client1.setSurname("Orlova");
         client1.setAccount(account1);
 
         Client client2 = new Client();
@@ -139,7 +136,7 @@ public class MainClass {
         atm1.setBalance(firstAtmBalance);
 
         Atm atm2 = new Atm();
-        atm1.setAddress(address2);
+        atm2.setAddress(address2);
         Map<CurrencyType, Map<BigDecimal, BigDecimal>> secondAtmBalance = new HashMap<>();
         secondAtmBalance.put(CurrencyType.valueOf("BYN"), bynDenominations2);
         secondAtmBalance.put(CurrencyType.valueOf("RUB"), rubDenominations2);
@@ -168,7 +165,7 @@ public class MainClass {
 //        ClientService clientService = new ClientServiceImpl();
 //        clientService.update(client1);
 
-        BankService bankService = new BankServiceImpl();
-        bankService.create(alfaBank);
+//        BankService bankService = new BankServiceImpl();
+//        bankService.create(alfaBank);
     }
 }

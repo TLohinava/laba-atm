@@ -3,11 +3,18 @@ package com.solvd.atm;
 import com.solvd.atm.domain.Atm;
 import com.solvd.atm.domain.Card;
 import com.solvd.atm.domain.CurrencyType;
+import com.solvd.atm.domain.exception.CurrencyException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Utils {
+
+    private static final Logger LOGGER = LogManager.getLogger(Utils.class);
+    private static final int CURRENCY_TYPE_NUMBER = 5;
 
     public static BigDecimal enterSum() {
         Scanner scanner = new Scanner(System.in);
@@ -28,7 +35,7 @@ public class Utils {
 
     public static void withdrawCash(Atm atm, Card card) {
         BigDecimal sum = enterSum();
-        boolean checkAtm = atm.checkBalance(sum, CurrencyType.BYN);
+        boolean checkAtm = atm.checkBalance(sum, choiceCurrency());
         boolean checkCard = card.checkBalance(sum, card.getCurrencyType());
         if (checkAtm && checkCard) {
             card.withdraw(sum);
@@ -36,79 +43,38 @@ public class Utils {
         }
     }
 
-    public static  currencySelection(Atm atm, CurrencyType currencyType){
+    public static CurrencyType choiceCurrency() {
+        CurrencyType currencyType = null;
         Scanner scanner = new Scanner(System.in);
-
-    }
-
-    public static String getResult(BigDecimal inCount, int from, int to) {
-        BigDecimal result = BigDecimal.valueOf(0);
-        switch (from) {
-            case 0:
-                switch (to) {
-                    case 0:
-                        break;
-                    case 1:
-                        result = inCount / getUSDrate();
-                        break;
-                    case 2:
-                        result = inCount / getEURrate();
-                        ;
-                        break;
-                    case 3:
-                        result = inCount / getUAHrate() * 10;
-                        break;
-                }
-                break;
-            case 1:
-                switch (to) {
-                    case 0:
-                        result = inCount * getUSDrate();
-                        break;
-                    case 1:
-
-                        break;
-                    case 2:
-                        result = inCount * getUSDrate() / getEURrate();
-                        break;
-                    case 3:
-                        result = inCount * getUSDrate() / getUAHrate() * 10;
-                        break;
-                }
-                break;
-            case 2:
-                switch (to) {
-                    case 0:
-                        result = inCount * getEURrate();
-                        break;
-                    case 1:
-                        result = inCount * getEURrate() / getUSDrate();
-                        break;
-                    case 2:
-
-                        break;
-                    case 3:
-                        result = inCount * getEURrate() / getUAHrate() * 10;
-                        break;
-                }
-                break;
-            case 3:
-                switch (to) {
-                    case 0:
-                        result = inCount * getUAHrate() / 10;
-                        break;
-                    case 1:
-                        result = inCount * getUAHrate() / 10 / getUSDrate();
-                        break;
-                    case 2:
-                        result = inCount * (getUAHrate() / 10) / getEURrate();
-                        break;
-                    case 3:
-                        break;
-                }
-                break;
+        System.out.println("Please enter currency: 1. BYN 2. RUB 3. EUR 4. USD 5. CNY");
+        try {
+            int inputCurrency = scanner.nextInt();
+            if (inputCurrency < 1 && inputCurrency > CURRENCY_TYPE_NUMBER) {
+                throw new CurrencyException("Sorry, the currency type doesn't exist");
+            }
+            switch (inputCurrency) {
+                case 1:
+                    currencyType = CurrencyType.BYN;
+                    break;
+                case 2:
+                    currencyType = CurrencyType.RUB;
+                    break;
+                case 3:
+                    currencyType = CurrencyType.EUR;
+                    break;
+                case 4:
+                    currencyType = CurrencyType.USD;
+                    break;
+                case 5:
+                    currencyType = CurrencyType.CNY;
+                    break;
+                default:
+                    LOGGER.error("Sorry, the currency you selected is incorrect!");
+                    break;
+            }
+        } catch (InputMismatchException e) {
+            throw new CurrencyException("Еhe input type is incorrect, enter a digit from 1 to 5");
         }
-        String s = String.format("%.4f", result);
-        return s;
+        return currencyType;
     }
 }
