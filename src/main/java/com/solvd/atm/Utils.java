@@ -3,6 +3,7 @@ package com.solvd.atm;
 import com.solvd.atm.domain.Atm;
 import com.solvd.atm.domain.Card;
 import com.solvd.atm.domain.CurrencyType;
+import com.solvd.atm.domain.IUseATM;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -35,6 +36,12 @@ public class Utils {
             card.withdraw(sum);
             atm.withdraw(sum);
         }
+
+    }
+
+    public static void useATM(IUseATM useATM, Card card) {
+        useATM.getMenu(card);
+
     }
 
 
