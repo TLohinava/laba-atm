@@ -1,7 +1,5 @@
 package com.solvd.atm;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import com.solvd.atm.domain.Atm;
 import com.solvd.atm.domain.Card;
 import com.solvd.atm.domain.CurrencyType;
@@ -11,24 +9,22 @@ import java.util.Scanner;
 
 public class Utils {
 
-    private static final Logger LOGGER = LogManager.getLogger(Utils.class);
-
     public static void selectFunction(Card card) {
         Scanner input = new Scanner(System.in);
         boolean correctData = true;
 
-        LOGGER.info("--------- Welcome to the ATM ---------");
+        System.out.println("--------- Welcome to the ATM ---------");
         for (int i = 1; i <= 3; i++) {
-            LOGGER.info("Please enter your pincode:");
+            System.out.println("Please enter your pincode:");
             Integer inputPin = input.nextInt();
             if (inputPin.equals(card.getPin())) {
                 correctData = true;
                 break;
             } else {
                 if (i <= 2) {
-                    LOGGER.info(String.format("Sorry, the pincode is wrong, you still have %s chances!", (3 - i)));
+                    System.out.println(String.format("Sorry, the pincode is wrong, you still have %s chances!", (3 - i)));
                 } else {
-                    LOGGER.info("Sorry, your card is blocked!");
+                    System.out.println("Sorry, your card is blocked!");
                     break;
                 }
                 correctData = false;
@@ -37,42 +33,42 @@ public class Utils {
         if (correctData) {
             char answer = 'Y';
             while (answer == 'Y') {
-                LOGGER.info("Please select the function: 1. Withdrawal 2. Check balance 3. Exit");
+                System.out.println("Please select the function: 1. Withdrawal 2. Check balance 3. Exit");
                 int choice = input.nextInt();
                 switch (choice) {
                     case 1:
-                        LOGGER.info("---> Withdrawal");
-                        LOGGER.info("Please enter the withdrawal amount:");
+                        System.out.println("---> Withdrawal");
+                        System.out.println("Please enter the withdrawal amount:");
                         BigDecimal sum = input.nextBigDecimal();
                         BigDecimal balance = card.getBalance();
                         if (sum.compareTo(BigDecimal.ZERO) > 0) {
                             if (sum.compareTo(balance) <= 0) {
-                                LOGGER.info("Please take your cash!");
+                                System.out.println("Please take your cash!");
                                 card.setBalance(balance.subtract(sum));
                             } else {
-                                LOGGER.info("Sorry, not enough funds on your balance!");
+                                System.out.println("Sorry, not enough funds on your balance!");
                             }
                         } else {
-                            LOGGER.info("Please enter the correct amount:");
+                            System.out.println("Please enter the correct amount:");
                         }
                         break;
                     case 2:
-                        LOGGER.info("---> Check balance");
+                        System.out.println("---> Check balance");
                         BigDecimal currentBalance = card.getBalance();
-                        LOGGER.info(String.format("Balance on your card: %s", currentBalance));
+                        System.out.println(String.format("Balance on your card: %s", currentBalance));
                         break;
                     case 3:
-                        LOGGER.info("---> Exit");
-                        LOGGER.info("Thank you for use!");
+                        System.out.println("---> Exit");
+                        System.out.println("Thank you for use!");
                         return;
                     default:
-                        LOGGER.info("Sorry, the function you selected is incorrect!");
+                        System.out.println("Sorry, the function you selected is incorrect!");
                         break;
                 }
-                LOGGER.info("Continue? Y(Yes) / N(No)");
+                System.out.println("Continue? Y(Yes) / N(No)");
                 answer = input.next().charAt(0);
             }
-            LOGGER.info("Thank you for use!");
+            System.out.println("Thank you for use!");
         }
     }
 
