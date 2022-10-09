@@ -167,5 +167,7 @@ public class MainClass {
 
 //        BankService bankService = new BankServiceImpl();
 //        bankService.create(alfaBank);
+
+        Utils.enterSum(CurrencyType.BYN);
     }
 }
