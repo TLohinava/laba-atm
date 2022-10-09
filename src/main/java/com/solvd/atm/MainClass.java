@@ -99,6 +99,6 @@ public class MainClass {
         List<Client> alfaClients = List.of(client1, client2);
         alfaBank.setClients(alfaClients);
 
-        Utils.useATM(client1, card1);
+        client1.getMenu(card1);
     }
 }
