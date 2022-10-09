@@ -64,7 +64,7 @@ public class Utils {
     }
 
     public static void withdrawCash(Atm atm, Card card) {
-        CurrencyType currencyType = choiceCurrency();
+        CurrencyType currencyType = chooseCurrency();
         BigDecimal sum = enterSum(currencyType);
         boolean checkAtm = atm.checkBalance(sum, currencyType);
         boolean checkCard = card.checkBalance(sum, card.getCurrencyType());
@@ -74,7 +74,7 @@ public class Utils {
         }
     }
 
-    public static CurrencyType choiceCurrency() {
+    public static CurrencyType chooseCurrency() {
         CurrencyType currencyType = null;
         try (Scanner scanner = new Scanner(System.in)) {
             System.out.println("Please enter currency: 1. BYN 2. RUB 3. EUR 4. USD 5. CNY");
@@ -82,7 +82,7 @@ public class Utils {
                 int inputCurrency = scanner.nextInt();
                 if (inputCurrency < 1 || inputCurrency > CURRENCY_TYPE_NUMBER) {
                     System.out.println("Sorry, the currency type doesn't exist");
-                    currencyType = choiceCurrency();
+                    currencyType = chooseCurrency();
                 } else {
                     switch (inputCurrency) {
                         case 1:
@@ -107,7 +107,7 @@ public class Utils {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("The input type is incorrect, enter a digit from 1 to 5");
-                currencyType = choiceCurrency();
+                currencyType = chooseCurrency();
             }
         }
         return currencyType;
