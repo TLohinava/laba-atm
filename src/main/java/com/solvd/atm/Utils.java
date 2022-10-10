@@ -10,7 +10,7 @@ import java.util.*;
 
 public class Utils {
 
-    public static void selectFunction(Card card) {
+    public static void selectFunction(Atm atm, Card card) {
         Scanner input = new Scanner(System.in);
         boolean correctData = true;
 
@@ -39,19 +39,7 @@ public class Utils {
                 switch (choice) {
                     case 1:
                         System.out.println("---> Withdrawal");
-                        System.out.println("Please enter the withdrawal amount:");
-                        BigDecimal sum = input.nextBigDecimal();
-                        BigDecimal balance = card.getBalance();
-                        if (sum.compareTo(BigDecimal.ZERO) > 0) {
-                            if (sum.compareTo(balance) <= 0) {
-                                System.out.println("Please take your cash!");
-                                card.setBalance(balance.subtract(sum));
-                            } else {
-                                System.out.println("Sorry, not enough funds on your balance!");
-                            }
-                        } else {
-                            System.out.println("Please enter the correct amount:");
-                        }
+                        withdrawCash(atm, card);
                         break;
                     case 2:
                         System.out.println("---> Check balance");

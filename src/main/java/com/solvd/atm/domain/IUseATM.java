@@ -2,6 +2,6 @@ package com.solvd.atm.domain;
 
 public interface IUseATM {
 
-    void getMenu(Card card);
+    void getMenu(Atm atm, Card card);
 
 }
