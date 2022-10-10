@@ -64,7 +64,7 @@ public class Utils {
     public static BigDecimal enterSum() {
         Scanner scanner = new Scanner(System.in);
         BigDecimal sum;
-        System.out.println("Please enter the required sum: ");
+        System.out.println("Please enter the withdrawal amount:");
         if (scanner.hasNextBigDecimal()) {
             sum = scanner.nextBigDecimal();
             if (sum.compareTo(BigDecimal.ZERO) <= 0) {
@@ -95,19 +95,19 @@ public class Utils {
         BigDecimal mapSum = new BigDecimal(0);
 
         for (Map.Entry<BigDecimal, BigDecimal> entry : map.entrySet()) {
-            BigDecimal multipliedEntry = entry.getKey().multiply(entry.getValue());
-            BigDecimal difference = multipliedEntry.subtract(sum);
-            mapSum = mapSum.add(multipliedEntry);
+            BigDecimal amount = entry.getKey().multiply(entry.getValue());
+            BigDecimal difference = amount.subtract(sum);
+            mapSum = mapSum.add(amount);
 
             if (difference.compareTo(BigDecimal.ZERO) >= 0 && sum.compareTo(entry.getKey()) >= 0) {
                 BigDecimal quantity = sum.divide(entry.getKey(), RoundingMode.FLOOR);
                 BigDecimal rest = sum.subtract(entry.getKey().multiply(quantity));
                 option = entry.getKey() + "x" + quantity;
 
-                while(rest.compareTo(BigDecimal.ZERO) > 0) {
+                while (rest.compareTo(BigDecimal.ZERO) > 0) {
                     for (Map.Entry<BigDecimal, BigDecimal> subEntry : map.entrySet()) {
                         BigDecimal subRest = rest.divide(subEntry.getKey(), RoundingMode.FLOOR);
-                        if(subRest.compareTo(BigDecimal.ZERO) > 0) {
+                        if (subRest.compareTo(BigDecimal.ZERO) > 0) {
                             option += " " + subEntry.getKey() + "x" + subRest;
                             rest = rest.subtract(subEntry.getKey().multiply(subRest));
                         }
@@ -152,6 +152,7 @@ public class Utils {
             System.out.println("The option you've entered is not available. Please try again");
             chooseOptions(map, sum);
         }
+        System.out.println("Please take your cash!");
         return chosenOption;
     }
 
