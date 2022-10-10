@@ -96,22 +96,20 @@ public class Utils {
 
         for (Map.Entry<BigDecimal, BigDecimal> entry : map.entrySet()) {
             BigDecimal multipliedEntry = entry.getKey().multiply(entry.getValue());
-            BigDecimal subtracted = multipliedEntry.subtract(sum);
+            BigDecimal difference = multipliedEntry.subtract(sum);
             mapSum = mapSum.add(multipliedEntry);
 
-            if (subtracted.compareTo(BigDecimal.ZERO) >= 0 && sum.compareTo(entry.getKey()) >= 0) {
+            if (difference.compareTo(BigDecimal.ZERO) >= 0 && sum.compareTo(entry.getKey()) >= 0) {
                 BigDecimal quantity = sum.divide(entry.getKey(), RoundingMode.FLOOR);
+                BigDecimal rest = sum.subtract(entry.getKey().multiply(quantity));
                 option = entry.getKey() + "x" + quantity;
 
-                if (sum.remainder(entry.getKey()).compareTo(BigDecimal.ZERO) != 0) {
-                    BigDecimal rest = sum.remainder(entry.getKey());
-
+                while(rest.compareTo(BigDecimal.ZERO) > 0) {
                     for (Map.Entry<BigDecimal, BigDecimal> subEntry : map.entrySet()) {
                         BigDecimal subRest = rest.divide(subEntry.getKey(), RoundingMode.FLOOR);
-
-                        if (subRest.compareTo(BigDecimal.ZERO) > 0) {
+                        if(subRest.compareTo(BigDecimal.ZERO) > 0) {
                             option += " " + subEntry.getKey() + "x" + subRest;
-                            break;
+                            rest = rest.subtract(subEntry.getKey().multiply(subRest));
                         }
                     }
                 }
@@ -165,6 +163,5 @@ public class Utils {
             innerArray = o.split("x");
             map.replace(new BigDecimal(innerArray[0]), map.get(new BigDecimal(innerArray[0])).subtract(new BigDecimal(innerArray[1])));
         }
-        System.out.println(map);
     }
 }
