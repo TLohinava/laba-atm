@@ -10,8 +10,8 @@ public class Client implements IUseATM {
     private Account account;
 
     @Override
-    public void getMenu(Card card) {
-        Utils.selectFunction(card);
+    public void getMenu(Atm atm, Card card) {
+        Utils.selectFunction(atm, card);
     }
 
     public Long getId() {

@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Utils {
 
-    public static void selectFunction(Card card) {
+    public static void selectFunction(Atm atm, Card card) {
         Scanner input = new Scanner(System.in);
         boolean correctData = true;
 
@@ -38,19 +38,7 @@ public class Utils {
                 switch (choice) {
                     case 1:
                         System.out.println("---> Withdrawal");
-                        System.out.println("Please enter the withdrawal amount:");
-                        BigDecimal sum = input.nextBigDecimal();
-                        BigDecimal balance = card.getBalance();
-                        if (sum.compareTo(BigDecimal.ZERO) > 0) {
-                            if (sum.compareTo(balance) <= 0) {
-                                System.out.println("Please take your cash!");
-                                card.setBalance(balance.subtract(sum));
-                            } else {
-                                System.out.println("Sorry, not enough funds on your balance!");
-                            }
-                        } else {
-                            System.out.println("Please enter the correct amount:");
-                        }
+                        withdrawCash(atm, card);
                         break;
                     case 2:
                         System.out.println("---> Check balance");
@@ -65,7 +53,7 @@ public class Utils {
                         System.out.println("Sorry, the function you selected is incorrect!");
                         break;
                 }
-                System.out.println("Continue? Y(Yes) / N(No)");
+                System.out.println("Continue? Yes / No");
                 answer = input.next().charAt(0);
             }
             System.out.println("Thank you for use!");
@@ -91,12 +79,184 @@ public class Utils {
 
     public static void withdrawCash(Atm atm, Card card) {
         BigDecimal sum = enterSum();
-        boolean checkAtm = atm.checkBalance(sum, CurrencyType.BYN);
-        //change currencyType in atm method for week two
-        boolean checkCard = card.checkBalance(sum, card.getCurrencyType());
+        CurrencyType inputType = selectCurrencyType();
+        CurrencyType cardType = card.getCurrencyType();
+        BigDecimal convertSum = atm.changeCurrencyType(sum, inputType, cardType);
+        convertSum = convertSum.setScale(1, BigDecimal.ROUND_UP);
+
+        boolean checkAtm = atm.checkBalance(sum, inputType);
+        boolean checkCard = card.checkBalance(convertSum, cardType);
         if (checkAtm && checkCard) {
-            card.withdraw(sum);
-            atm.withdraw(sum);
+            atm.withdraw(sum, inputType);
+            card.withdraw(convertSum, cardType);
+            System.out.println("Please take your cash!");
         }
+    }
+
+    public static CurrencyType selectCurrencyType() {
+        Scanner input = new Scanner(System.in);
+        CurrencyType inputType = CurrencyType.BYN;
+
+        System.out.println("What type of currency do you need? 1. BYN 2. RUB 3. EUR 4. USD 5. CNY");
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1:
+                inputType = CurrencyType.BYN;
+                break;
+            case 2:
+                inputType = CurrencyType.RUB;
+                break;
+            case 3:
+                inputType = CurrencyType.EUR;
+                break;
+            case 4:
+                inputType = CurrencyType.USD;
+                break;
+            case 5:
+                inputType = CurrencyType.CNY;
+                break;
+            default:
+                System.out.println("Sorry, the type of currency you selected is incorrect!");
+                break;
+        }
+        return inputType;
+    }
+
+    public static BigDecimal convertInputType(BigDecimal sum, CurrencyType inputType, CurrencyType cardType) {
+        switch (inputType) {
+            case BYN:
+                sum = Utils.convertBYN(sum, cardType);
+                break;
+            case RUB:
+                sum = Utils.convertRUB(sum, cardType);
+                break;
+            case EUR:
+                sum = Utils.convertEUR(sum, cardType);
+                break;
+            case USD:
+                sum = Utils.convertUSD(sum, cardType);
+                break;
+            case CNY:
+                sum = Utils.convertCNY(sum, cardType);
+                break;
+            default:
+                break;
+        }
+        return sum;
+    }
+
+    public static BigDecimal convertBYN(BigDecimal sum, CurrencyType type) {
+        switch (type) {
+            case BYN:
+                sum = sum.multiply(BigDecimal.valueOf(1));
+                break;
+            case RUB:
+                sum = sum.multiply(BigDecimal.valueOf(24.73));
+                break;
+            case EUR:
+                sum = sum.multiply(BigDecimal.valueOf(0.41));
+                break;
+            case USD:
+                sum = sum.multiply(BigDecimal.valueOf(0.387));
+                break;
+            case CNY:
+                sum = sum.multiply(BigDecimal.valueOf(2.81));
+                break;
+            default:
+                break;
+        }
+        return sum;
+    }
+
+    public static BigDecimal convertRUB(BigDecimal sum, CurrencyType currency) {
+        switch (currency) {
+            case BYN:
+                sum = sum.multiply(BigDecimal.valueOf(0.0404));
+                break;
+            case RUB:
+                sum = sum.multiply(BigDecimal.valueOf(1));
+                break;
+            case EUR:
+                sum = sum.multiply(BigDecimal.valueOf(0.016));
+                break;
+            case USD:
+                sum = sum.multiply(BigDecimal.valueOf(0.016));
+                break;
+            case CNY:
+                sum = sum.multiply(BigDecimal.valueOf(0.114));
+                break;
+            default:
+                break;
+        }
+        return sum;
+    }
+
+    public static BigDecimal convertEUR(BigDecimal sum, CurrencyType type) {
+        switch (type) {
+            case BYN:
+                sum = sum.multiply(BigDecimal.valueOf(2.52));
+                break;
+            case RUB:
+                sum = sum.multiply(BigDecimal.valueOf(62.32));
+                break;
+            case EUR:
+                sum = sum.multiply(BigDecimal.valueOf(1));
+                break;
+            case USD:
+                sum = sum.multiply(BigDecimal.valueOf(0.974));
+                break;
+            case CNY:
+                sum = sum.multiply(BigDecimal.valueOf(7.08));
+                break;
+            default:
+                break;
+        }
+        return sum;
+    }
+
+    public static BigDecimal convertUSD(BigDecimal sum, CurrencyType type) {
+        switch (type) {
+            case BYN:
+                sum = sum.multiply(BigDecimal.valueOf(2.58));
+                break;
+            case RUB:
+                sum = sum.multiply(BigDecimal.valueOf(63.98));
+                break;
+            case EUR:
+                sum = sum.multiply(BigDecimal.valueOf(1.027));
+                break;
+            case USD:
+                sum = sum.multiply(BigDecimal.valueOf(1));
+                break;
+            case CNY:
+                sum = sum.multiply(BigDecimal.valueOf(7.27));
+                break;
+            default:
+                break;
+        }
+        return sum;
+    }
+
+    public static BigDecimal convertCNY(BigDecimal sum, CurrencyType type) {
+        switch (type) {
+            case BYN:
+                sum = sum.multiply(BigDecimal.valueOf(0.3555));
+                break;
+            case RUB:
+                sum = sum.multiply(BigDecimal.valueOf(8.8));
+                break;
+            case EUR:
+                sum = sum.multiply(BigDecimal.valueOf(0.14));
+                break;
+            case USD:
+                sum = sum.multiply(BigDecimal.valueOf(0.138));
+                break;
+            case CNY:
+                sum = sum.multiply(BigDecimal.valueOf(1));
+                break;
+            default:
+                break;
+        }
+        return sum;
     }
 }

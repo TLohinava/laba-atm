@@ -12,13 +12,21 @@ public class Card implements ICheck, IWithdraw {
 
     @Override
     public Boolean checkBalance(BigDecimal sum, CurrencyType type) {
-        return sum.compareTo(this.getBalance()) <= 0 && type.equals(this.getCurrencyType());
+        Boolean correctData = false;
+        if(sum.compareTo(this.getBalance()) <= 0 && type.equals(this.getCurrencyType())) {
+            correctData = true;
+        } else {
+            System.out.println("Sorry, not enough funds on your balance!");
+        }
+        return correctData;
     }
 
     @Override
-    public void withdraw(BigDecimal sum) {
-        BigDecimal withdrawnSum = this.getBalance().subtract(sum);
-        this.setBalance(withdrawnSum);
+    public void withdraw(BigDecimal sum, CurrencyType type) {
+        if (type.equals(this.getCurrencyType())) {
+            BigDecimal withdrawnSum = this.getBalance().subtract(sum);
+            this.setBalance(withdrawnSum);
+        }
     }
 
     public Long getId() {

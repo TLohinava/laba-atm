@@ -4,6 +4,6 @@ import java.math.BigDecimal;
 
 public interface IWithdraw {
 
-    void withdraw(BigDecimal sum);
+    void withdraw(BigDecimal sum, CurrencyType type);
 
 }
