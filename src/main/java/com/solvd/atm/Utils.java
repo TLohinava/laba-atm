@@ -162,7 +162,9 @@ public class Utils {
         String[] innerArray;
         for (String o : optionArray) {
             innerArray = o.split("x");
-            map.replace(new BigDecimal(innerArray[0]), map.get(new BigDecimal(innerArray[0])).subtract(new BigDecimal(innerArray[1])));
+            BigDecimal mapValue = map.get(new BigDecimal(innerArray[0]));
+            BigDecimal newValue = mapValue.subtract(new BigDecimal(innerArray[1]));
+            map.replace(new BigDecimal(innerArray[0]), newValue);
         }
     }
 }
