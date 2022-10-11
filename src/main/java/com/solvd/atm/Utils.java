@@ -29,6 +29,7 @@ public class Utils {
             System.out.println("Sorry, the sum should be numeric. ");
             sum = enterSum(currencyType);
         }
+        return sum;
     }
 
     private static boolean checkMinSum(BigDecimal sum, CurrencyType currencyType) {

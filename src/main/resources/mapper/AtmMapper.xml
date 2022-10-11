@@ -10,12 +10,22 @@
         select id, bank_id, address_id, balance, currency_type from atms where id = #{id}
     </select>
 
+    <select id="getMap" resultMap="CashResultMap">
+        select currency_type, denomination, quantity from cash
+    </select>
+
     <resultMap id="AtmResultMap" type="com.solvd.atm.domain.Atm" autoMapping="false">
         <id property="id" column="id"/>
-        <result property= "balance" column="balance"/>
-        <result property= "currencyType" column="currency_type"/>
+        <association property= "balance" resultMap="com.solvd.atm.persistence.AtmRepository.CashResultMap"/>
         <association property="bank" resultMap="com.solvd.atm.persistence.BankRepository.BankResultMap"/>
         <association property="address" resultMap="com.solvd.atm.persistence.AddressRepository.AddressResultMap"/>
+    </resultMap>
+
+    <resultMap id="CashResultMap" type="com.solvd.atm.domain.Cash" autoMapping="false">
+        <id property="id" column="id"/>
+        <result property= "currencyType" column="currency_type"/>
+        <result property= "denomination" column="denomination"/>
+        <result property= "quantity" column="quantity"/>
     </resultMap>
 
     <update id="update" useGeneratedKeys="false">
