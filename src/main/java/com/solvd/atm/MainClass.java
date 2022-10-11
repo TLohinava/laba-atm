@@ -2,7 +2,9 @@ package com.solvd.atm;
 
 import com.solvd.atm.domain.*;
 import com.solvd.atm.service.AtmService;
+import com.solvd.atm.service.BankService;
 import com.solvd.atm.service.impl.AtmServiceImpl;
+import com.solvd.atm.service.impl.BankServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -159,15 +161,13 @@ public class MainClass {
 //        CardService cardService = new CardServiceImpl();
 //        System.out.println(cardService.read(3L));
 
-//        AtmService atmService = new AtmServiceImpl();
-//        atmService.create(1L, 1L, atm1);
+        AtmService atmService = new AtmServiceImpl();
+        atmService.create(1L, 1L, atm1);
 
 //        ClientService clientService = new ClientServiceImpl();
 //        clientService.update(client1);
 
 //        BankService bankService = new BankServiceImpl();
 //        bankService.create(alfaBank);
-
-        Utils.enterSum(CurrencyType.BYN);
     }
 }
