@@ -14,7 +14,6 @@ public class MainClass {
     private static final Logger LOGGER = LogManager.getLogger(MainClass.class);
 
     public static void main(String[] args) {
-
         Address address1 = new Address();
         address1.setCity("Minsk");
         address1.setStreet("Kolasa");
