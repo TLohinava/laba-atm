@@ -183,13 +183,16 @@ public class MainClass {
 
         List<Cash> cashList = List.of(cash, cash1, cash2);
 
-        CashService cs = new CashServiceImpl();
-        cs.updateBatch(cashList);
+//        CashService cs = new CashServiceImpl();
+//        cs.updateBatch(cashList);
 
 //        ClientService clientService = new ClientServiceImpl();
 //        clientService.update(client1);
 
 //        BankService bankService = new BankServiceImpl();
 //        bankService.create(alfaBank);
+
+        CashService cashService = new CashServiceImpl();
+        System.out.println(cashService.getMinBanknote(CurrencyType.BYN));
     }
 }

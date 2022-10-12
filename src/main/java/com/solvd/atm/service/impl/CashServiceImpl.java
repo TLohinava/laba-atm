@@ -37,4 +37,9 @@ public class CashServiceImpl implements CashService {
     public void updateBatch(List<Cash> cashList) {
         cashRepository.updateBatch(cashList);
     }
+
+    @Override
+    public BigDecimal getMinBanknote(CurrencyType currencyType) {
+        return cashRepository.getMinBanknote(currencyType);
+    }
 }

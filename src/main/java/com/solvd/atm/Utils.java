@@ -32,6 +32,25 @@ public class Utils {
         return sum;
     }
 
+//    private boolean checkMinSum(BigDecimal sum, CurrencyType currencyType) {
+//        if (sum.compareTo(CashService.getMinBanknote()) < 0) {
+//            System.out.println("Sorry, the min sum should be 5 and more");
+//            return false;
+//        }
+//        return true;
+//    }
+
+    public static void withdrawCash(Atm atm, Card card) {
+        CurrencyType currencyType = chooseCurrency();
+        BigDecimal sum = enterSum(currencyType);
+        boolean checkAtm = atm.checkBalance(sum, currencyType);
+        boolean checkCard = card.checkBalance(sum, card.getCurrencyType());
+        if (checkAtm && checkCard) {
+            card.withdraw(sum);
+            atm.withdraw(sum);
+        }
+    }
+
     private static boolean checkMinSum(BigDecimal sum, CurrencyType currencyType) {
         boolean result = true;
         if (currencyType == CurrencyType.BYN) {
@@ -61,17 +80,6 @@ public class Utils {
             }
         }
         return result;
-    }
-
-    public static void withdrawCash(Atm atm, Card card) {
-        CurrencyType currencyType = chooseCurrency();
-        BigDecimal sum = enterSum(currencyType);
-        boolean checkAtm = atm.checkBalance(sum, currencyType);
-        boolean checkCard = card.checkBalance(sum, card.getCurrencyType());
-        if (checkAtm && checkCard) {
-            card.withdraw(sum);
-            atm.withdraw(sum);
-        }
     }
 
     public static CurrencyType chooseCurrency() {

@@ -16,4 +16,7 @@ public interface CashService {
     void create(List<Cash> cashList);
 
     void updateBatch(List<Cash> cashList);
+
+    BigDecimal getMinBanknote(CurrencyType currencyType);
+
 }

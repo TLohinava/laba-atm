@@ -23,3 +23,10 @@ values (5, 100, 'BYN'),
        (20, 100, 'BYN'),
        (50, 100, 'BYN'),
        (100, 100, 'BYN');
+
+insert into cash (denomination, quantity, currency_type)
+values (50, 100, 'RUB'),
+	   (100, 50, 'RUB'),
+       (200, 10, 'RUB'),
+       (500, 10, 'RUB'),
+       (1000, 10, 'RUB');
