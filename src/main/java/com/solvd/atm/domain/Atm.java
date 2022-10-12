@@ -10,18 +10,22 @@ public class Atm implements ICheck, IWithdraw, IConvert {
     private Long id;
     private Address address;
     private Map<CurrencyType, Map<BigDecimal, BigDecimal>> balance;
-
-    @Override
+    
     public BigDecimal changeCurrencyType(BigDecimal sum, CurrencyType inputType, CurrencyType cardType) {
         return Utils.convertInputType(sum, inputType, cardType);
     }
 
     @Override
-    public Boolean checkBalance(BigDecimal sum, CurrencyType type) {
+    public void withdraw(BigDecimal sum) {
+        Map<BigDecimal, BigDecimal> currentBalance = this.getBalance().get(CurrencyType.BYN);
+        Utils.updateMap(currentBalance, sum);
+
+    @Override
+    public Boolean checkBalance(BigDecimal sum, CurrencyType currencyType) {
+        boolean passedCheck = false;
         Set<CurrencyType> availableTypes = this.getBalance().keySet();
         BigDecimal availableSum = BigDecimal.ZERO;
-        Boolean correctData = false;
-
+        
         if (availableTypes.contains(type)) {
             this.getBalance().get(type).entrySet().stream()
                     .map(entry -> entry.getKey().multiply(entry.getValue()))
@@ -29,28 +33,13 @@ public class Atm implements ICheck, IWithdraw, IConvert {
         } else {
             System.out.println("Sorry, the atm doesn't contain the type of currency you selected!");
         }
-        if (sum.compareTo(availableSum) <= 0) {
-            correctData = true;
-        }  else {
-            System.out.println("Sorry, not enough funds on atm's balance!");
+        
+        if (sum.compareTo(atmBalance) <= 0) {
+            passedCheck = true;
+        } else {
+            System.out.println("Unfortunately, this ATM doesn't have enough cash to continue with your transaction.");
         }
-        return correctData;
-    }
-
-    @Override
-    public void withdraw(BigDecimal sum, CurrencyType type) {
-//      add method of choosing denomination
-        Scanner input = new Scanner(System.in);
-        System.out.println("Please enter the denomination");
-        BigDecimal inputDenomination = input.nextBigDecimal();
-//
-        Set<CurrencyType> availableTypes = this.getBalance().keySet();
-        if (availableTypes.contains(type)) {
-            this.getBalance().get(type).entrySet().stream()
-                    .filter(entry -> entry.getKey().equals(inputDenomination))
-                    .forEach(entry -> this.getBalance().get(type).put(inputDenomination,
-                            entry.getValue().subtract(sum.divide(inputDenomination, 0))));
-        }
+        return passedCheck;
     }
 
     public Long getId() {
