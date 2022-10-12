@@ -88,8 +88,8 @@ public class Utils {
         boolean checkAtm = atm.checkBalance(sum, inputType);
         boolean checkCard = card.checkBalance(convertSum, cardType);
         if (checkAtm && checkCard) {
-            atm.withdraw(sum, inputType);
-            card.withdraw(convertSum, cardType);
+            atm.withdraw(sum);
+            card.withdraw(convertSum);
             System.out.println("Please take your cash!");
         }
     }
