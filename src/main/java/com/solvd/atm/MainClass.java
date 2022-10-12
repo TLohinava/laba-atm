@@ -162,7 +162,7 @@ public class MainClass {
 //        System.out.println(cardService.read(3L));
 
         AtmService atmService = new AtmServiceImpl();
-        atmService.create(1L, 1L, atm1);
+        System.out.println(atmService.getMap());
 
 //        ClientService clientService = new ClientServiceImpl();
 //        clientService.update(client1);

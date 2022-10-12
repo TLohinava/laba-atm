@@ -17,9 +17,9 @@ insert into clients (account_id, name, surname)
 values (1, 'Olga', 'Orlova'),
 	   (2, 'Ivan', 'Petrov');
 
-insert into cash (denomination, quantity)
-values (5, 100),
-	   (10, 100),
-       (20, 100),
-       (50, 100),
-       (100, 100);
+insert into cash (denomination, quantity, currency_type)
+values (5, 100, 'BYN'),
+	   (10, 100, 'BYN'),
+       (20, 100, 'BYN'),
+       (50, 100, 'BYN'),
+       (100, 100, 'BYN');
