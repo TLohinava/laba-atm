@@ -23,8 +23,8 @@ public class Card implements ICheck, IWithdraw {
 
     @Override
     public void withdraw(BigDecimal sum) {
-        BigDecimal balance = this.getBalance();
-        this.setBalance(balance.subtract(sum));
+            BigDecimal withdrawnSum = this.getBalance().subtract(sum);
+            this.setBalance(withdrawnSum);
     }
 
     public Long getId() {

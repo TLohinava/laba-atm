@@ -1,8 +1,6 @@
 package com.solvd.atm;
 
 import com.solvd.atm.domain.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -10,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public class MainClass {
-
-    private static final Logger LOGGER = LogManager.getLogger(MainClass.class);
 
     public static void main(String[] args) {
         Address address1 = new Address();
