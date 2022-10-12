@@ -23,9 +23,10 @@ public class Atm implements ICheck, IWithdraw, IConvert {
         Boolean correctData = false;
 
         if (availableTypes.contains(type)) {
-            this.getBalance().get(type).entrySet().stream()
-                    .map(entry -> entry.getKey().multiply(entry.getValue()))
-                    .forEach(entry -> availableSum.add(entry));
+            for(Map.Entry<BigDecimal, BigDecimal> entry: this.getBalance().get(type).entrySet()){
+                BigDecimal multiplySum = entry.getKey().multiply(entry.getValue());
+                availableSum = availableSum.add(multiplySum);
+            }
         } else {
             System.out.println("Sorry, the atm doesn't contain the type of currency you selected!");
         }
