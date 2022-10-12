@@ -10,9 +10,44 @@ import org.apache.ibatis.session.SqlSession;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CashMapperImpl implements CashRepository {
+
+    @Override
+    public List<Cash> read() {
+        try (SqlSession session = MyBatisConfig.getSqlSessionFactory().openSession(true)) {
+            CashRepository mapper = session.getMapper(CashRepository.class);
+            return mapper.read();
+        }
+    }
+
+    @Override
+    public void create(List<Cash> cashList) {
+        try (SqlSession session = MyBatisConfig.getSqlSessionFactory().openSession(true)) {
+            CashRepository mapper = session.getMapper(CashRepository.class);
+            mapper.create(cashList);
+        }
+    }
+
+    @Override
+    public void update(Cash cash) {
+        try (SqlSession session = MyBatisConfig.getSqlSessionFactory().openSession(true)) {
+            CashRepository mapper = session.getMapper(CashRepository.class);
+                mapper.update(cash);
+        }
+    }
+
+    @Override
+    public void updateBatch(List<Cash> cashList) {
+        try (SqlSession session = MyBatisConfig.getSqlSessionFactory().openSession(true)) {
+            CashRepository mapper = session.getMapper(CashRepository.class);
+            for(Cash cash : cashList) {
+                mapper.update(cash);
+            }
+        }
+    }
 
     @Override
     public Map<CurrencyType, Map<BigDecimal, BigDecimal>> getMap() {

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -164,8 +165,26 @@ public class MainClass {
 //        System.out.println(cardService.read(3L));
 
 //        AtmService atmService = new AtmServiceImpl();
+
+        Cash cash = new Cash();
+        cash.setCurrencyType(CurrencyType.USD);
+        cash.setDenomination(new BigDecimal(10));
+        cash.setQuantity(new BigDecimal(8));
+
+        Cash cash1 = new Cash();
+        cash1.setCurrencyType(CurrencyType.USD);
+        cash1.setDenomination(new BigDecimal(20));
+        cash1.setQuantity(new BigDecimal(6));
+
+        Cash cash2 = new Cash();
+        cash2.setCurrencyType(CurrencyType.USD);
+        cash2.setDenomination(new BigDecimal(50));
+        cash2.setQuantity(new BigDecimal(3));
+
+        List<Cash> cashList = List.of(cash, cash1, cash2);
+
         CashService cs = new CashServiceImpl();
-        System.out.println(cs.getMap());
+        cs.updateBatch(cashList);
 
 //        ClientService clientService = new ClientServiceImpl();
 //        clientService.update(client1);
