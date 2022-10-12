@@ -13,8 +13,6 @@ public interface AtmService {
 
     Optional<Atm> read(Long id);
 
-    Map<CurrencyType, Map<BigDecimal, BigDecimal>> getMap();
-
     void update(Atm atm);
 
     void deleteById(Long deleteId);
