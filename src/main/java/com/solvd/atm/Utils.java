@@ -14,38 +14,36 @@ public class Utils {
 
     private static final int CURRENCY_TYPE_NUMBER = 5;
 
-    public static BigDecimal enterSum(CurrencyType currencyType) {
-        Scanner scanner = new Scanner(System.in);
+    public static BigDecimal enterSum(Scanner scanner, CurrencyType currencyType) {
         BigDecimal sum;
         System.out.println("Please enter the required sum: ");
         if (scanner.hasNextBigDecimal()) {
             sum = scanner.nextBigDecimal();
-            if (sum.compareTo(BigDecimal.ZERO) <= 0) {
-                System.out.println("Sorry, the sum cannot be 0 or less. ");
-                sum = enterSum(currencyType);
-            } else if (!checkMinSum(sum, currencyType)) {
+            if (!checkMinSum(sum, currencyType)) {
                 System.out.println("Sorry the sum is less than min");
-                sum = enterSum(currencyType);
+                sum = enterSum(scanner, currencyType);
             }
         } else {
             System.out.println("Sorry, the sum should be numeric. ");
-            sum = enterSum(currencyType);
+            sum = enterSum(scanner, currencyType);
         }
         return sum;
     }
 
     public static boolean checkMinSum(BigDecimal sum, CurrencyType currencyType) {
         CashService cashService = new CashServiceImpl();
-        if (sum.compareTo(cashService.getMinBanknote(currencyType).get()) < 0) {
-            System.out.println("Sorry, the min sum should be 5 and more");
+        BigDecimal minEntry = cashService.getMinBanknote(currencyType).get();
+        if (sum.compareTo(minEntry) < 0) {
+            System.out.printf("Sorry, the min sum should be %s and more%n", minEntry);
             return false;
         }
         return true;
     }
 
     public static void withdrawCash(Atm atm, Card card) {
+        Scanner scanner = new Scanner(System.in);
         CurrencyType currencyType = chooseCurrency();
-        BigDecimal sum = enterSum(currencyType);
+        BigDecimal sum = enterSum(scanner, currencyType);
         boolean checkAtm = atm.checkBalance(sum, currencyType);
         boolean checkCard = card.checkBalance(sum, card.getCurrencyType());
         if (checkAtm && checkCard) {
