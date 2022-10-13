@@ -16,9 +16,11 @@ public class Atm implements ICheck, IWithdraw, IConvert {
     }
 
     @Override
-    public void withdraw(BigDecimal sum) {
+    public void withdraw(BigDecimal sum) {}
+
+    public void withdraw(BigDecimal sum, Scanner scanner) {
         Map<BigDecimal, BigDecimal> currentBalance = this.getBalance().get(CurrencyType.BYN);
-        Utils.updateMap(currentBalance, sum);
+        Utils.updateMap(currentBalance, sum, scanner);
     }
 
     @Override

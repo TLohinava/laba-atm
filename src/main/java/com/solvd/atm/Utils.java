@@ -11,90 +11,89 @@ import java.util.*;
 public class Utils {
 
     public static void selectFunction(Atm atm, Card card) {
-        Scanner input = new Scanner(System.in);
-        boolean correctData = true;
+        try(Scanner input = new Scanner(System.in)) {
+            boolean correctData = true;
 
-        System.out.println("--------- Welcome to the ATM ---------");
-        for (int i = 1; i <= 3; i++) {
-            System.out.println("Please enter your pincode:");
-            Integer inputPin = input.nextInt();
-            if (inputPin.equals(card.getPin())) {
-                correctData = true;
-                break;
-            } else {
-                if (i <= 2) {
-                    System.out.println(String.format("Sorry, the pincode is wrong, you still have %s chances!", (3 - i)));
-                } else {
-                    System.out.println("Sorry, your card is blocked!");
+            System.out.println("--------- Welcome to the ATM ---------");
+            for (int i = 1; i <= 3; i++) {
+                System.out.println("Please enter your pincode:");
+                Integer inputPin = input.nextInt();
+                if (inputPin.equals(card.getPin())) {
+                    correctData = true;
                     break;
+                } else {
+                    if (i <= 2) {
+                        System.out.println(String.format("Sorry, the pincode is wrong, you still have %s chances!", (3 - i)));
+                    } else {
+                        System.out.println("Sorry, your card is blocked!");
+                        break;
+                    }
+                    correctData = false;
                 }
-                correctData = false;
             }
-        }
-        if (correctData) {
-            char answer = 'Y';
-            while (answer == 'Y') {
-                System.out.println("Please select the function: 1. Withdrawal 2. Check balance 3. Exit");
-                int choice = input.nextInt();
-                switch (choice) {
-                    case 1:
-                        System.out.println("---> Withdrawal");
-                        withdrawCash(atm, card);
-                        break;
-                    case 2:
-                        System.out.println("---> Check balance");
-                        BigDecimal currentBalance = card.getBalance();
-                        System.out.println(String.format("Balance on your card: %s", currentBalance));
-                        break;
-                    case 3:
-                        System.out.println("---> Exit");
-                        System.out.println("Thank you for use!");
-                        return;
-                    default:
-                        System.out.println("Sorry, the function you selected is incorrect!");
-                        break;
+            if (correctData) {
+                char answer = 'Y';
+                while (answer == 'Y') {
+                    System.out.println("Please select the function: 1. Withdrawal 2. Check balance 3. Exit");
+                    int choice = input.nextInt();
+                    switch (choice) {
+                        case 1:
+                            System.out.println("---> Withdrawal");
+                            withdrawCash(atm, card, input);
+                            break;
+                        case 2:
+                            System.out.println("---> Check balance");
+                            BigDecimal currentBalance = card.getBalance();
+                            System.out.println(String.format("Balance on your card: %s", currentBalance));
+                            break;
+                        case 3:
+                            System.out.println("---> Exit");
+                            System.out.println("Thank you for use!");
+                            return;
+                        default:
+                            System.out.println("Sorry, the function you selected is incorrect!");
+                            break;
+                    }
+                    System.out.println("Continue? Y / N");
+                    answer = input.next().charAt(0);
                 }
-                System.out.println("Continue? Y / N");
-                answer = input.next().charAt(0);
+                System.out.println("Thank you for use!");
             }
-            System.out.println("Thank you for use!");
         }
     }
 
-    public static BigDecimal enterSum() {
-        Scanner scanner = new Scanner(System.in);
+    public static BigDecimal enterSum(Scanner scanner) {
         BigDecimal sum;
         System.out.println("Please enter the withdrawal amount:");
         if (scanner.hasNextBigDecimal()) {
             sum = scanner.nextBigDecimal();
             if (sum.compareTo(BigDecimal.ZERO) <= 0) {
                 System.out.println("Sorry, the sum cannot be 0 or less. ");
-                sum = enterSum();
+                sum = enterSum(scanner);
             }
         } else {
             System.out.println("Sorry, the sum should be numeric. ");
-            sum = enterSum();
+            sum = enterSum(scanner);
         }
         return sum;
     }
 
-    public static void withdrawCash(Atm atm, Card card) {
-        BigDecimal sum = enterSum();
-        CurrencyType inputType = selectCurrencyType();
+    public static void withdrawCash(Atm atm, Card card, Scanner scanner) {
+        BigDecimal sum = enterSum(scanner);
+        CurrencyType inputType = selectCurrencyType(scanner);
         CurrencyType cardType = card.getCurrencyType();
         BigDecimal convertSum = atm.changeCurrencyType(sum, inputType, cardType);
 
         boolean checkAtm = atm.checkBalance(sum, inputType);
         boolean checkCard = card.checkBalance(convertSum, cardType);
         if (checkAtm && checkCard) {
-            atm.withdraw(sum);
+            atm.withdraw(sum, scanner);
             card.withdraw(convertSum);
             System.out.println("Please take your cash!");
         }
     }
 
-    public static CurrencyType selectCurrencyType() {
-        Scanner input = new Scanner(System.in);
+    public static CurrencyType selectCurrencyType(Scanner input) {
         CurrencyType inputType = CurrencyType.BYN;
 
         System.out.println("What type of currency do you need? 1. BYN 2. RUB 3. EUR 4. USD 5. CNY");
@@ -180,7 +179,7 @@ public class Utils {
                 sum = sum.multiply(BigDecimal.valueOf(0.016));
                 break;
             case USD:
-                sum = sum.multiply(BigDecimal.valueOf(0.016));
+                sum = sum.multiply(BigDecimal.valueOf(0.017));
                 break;
             case CNY:
                 sum = sum.multiply(BigDecimal.valueOf(0.114));
@@ -311,23 +310,22 @@ public class Utils {
         return options;
     }
 
-    public static String chooseOptions(Map<BigDecimal, BigDecimal> map, BigDecimal sum) {
+    public static String chooseOptions(Map<BigDecimal, BigDecimal> map, BigDecimal sum, Scanner scanner) {
         List<String> options = chooseDenomination(map, sum);
         String chosenOption = "";
-        Scanner digit = new Scanner(System.in);
         System.out.println("Please choose your option:");
-        int chosenDigit = digit.nextInt();
+        int chosenDigit = scanner.nextInt();
         if ((options.size() >= chosenDigit) && (chosenDigit > 0)) {
             chosenOption += options.get(chosenDigit - 1);
         } else {
             System.out.println("The option you've entered is not available. Please try again");
-            chooseOptions(map, sum);
+            chooseOptions(map, sum, scanner);
         }
         return chosenOption;
     }
 
-    public static void updateMap(Map<BigDecimal, BigDecimal> map, BigDecimal sum) {
-        String option = chooseOptions(map, sum);
+    public static void updateMap(Map<BigDecimal, BigDecimal> map, BigDecimal sum, Scanner scanner) {
+        String option = chooseOptions(map, sum, scanner);
         String[] optionArray = option.split(" ");
         String[] innerArray;
         for (String o : optionArray) {
