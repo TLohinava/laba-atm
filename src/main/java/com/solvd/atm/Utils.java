@@ -11,7 +11,7 @@ import java.util.*;
 public class Utils {
 
     public static void selectFunction(Atm atm, Card card) {
-        try(Scanner input = new Scanner(System.in)) {
+        try (Scanner input = new Scanner(System.in)) {
             boolean correctData = true;
 
             System.out.println("--------- Welcome to the ATM ---------");
@@ -87,14 +87,14 @@ public class Utils {
         boolean checkAtm = atm.checkBalance(sum, inputType);
         boolean checkCard = card.checkBalance(convertSum, cardType);
         if (checkAtm && checkCard) {
-            atm.withdraw(sum, scanner);
+            atm.withdraw(sum, scanner, inputType);
             card.withdraw(convertSum);
             System.out.println("Please take your cash!");
         }
     }
 
     public static CurrencyType selectCurrencyType(Scanner input) {
-        CurrencyType inputType = CurrencyType.BYN;
+        CurrencyType inputType = null;
 
         System.out.println("What type of currency do you need? 1. BYN 2. RUB 3. EUR 4. USD 5. CNY");
         int choice = input.nextInt();
