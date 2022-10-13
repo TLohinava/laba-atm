@@ -51,14 +51,6 @@ public class CashMapperImpl implements CashRepository {
     }
 
     @Override
-    public BigDecimal getMinBanknote(CurrencyType currencyType) {
-        try (SqlSession sqlSession = MyBatisConfig.getSqlSessionFactory().openSession(true)) {
-            CashRepository cashRepository = sqlSession.getMapper(CashRepository.class);
-            return cashRepository.getMinBanknote(currencyType);
-        }
-    }
-
-    @Override
     public Map<CurrencyType, Map<BigDecimal, BigDecimal>> getMap() {
         try (SqlSession sqlSession = MyBatisConfig.getSqlSessionFactory().openSession(true)) {
             class AtmHandler implements ResultHandler {

@@ -7,8 +7,10 @@ import com.solvd.atm.persistence.impl.CashMapperImpl;
 import com.solvd.atm.service.CashService;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class CashServiceImpl implements CashService {
 
@@ -39,7 +41,10 @@ public class CashServiceImpl implements CashService {
     }
 
     @Override
-    public BigDecimal getMinBanknote(CurrencyType currencyType) {
-        return cashRepository.getMinBanknote(currencyType);
+    public Optional<BigDecimal> getMinBanknote(CurrencyType currencyType) {
+        return cashRepository.read().stream()
+                .filter(o -> o.getCurrencyType() == currencyType)
+                .min(Comparator.comparing(Cash::getDenomination))
+                .map(Cash::getDenomination);
     }
 }

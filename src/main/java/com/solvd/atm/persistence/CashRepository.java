@@ -19,6 +19,4 @@ public interface CashRepository {
 
     void updateBatch(List<Cash> cashList);
 
-    BigDecimal getMinBanknote(CurrencyType currencyType);
-
 }

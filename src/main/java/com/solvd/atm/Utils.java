@@ -36,7 +36,7 @@ public class Utils {
 
     public static boolean checkMinSum(BigDecimal sum, CurrencyType currencyType) {
         CashService cashService = new CashServiceImpl();
-        if (sum.compareTo(cashService.getMinBanknote(currencyType)) < 0) {
+        if (sum.compareTo(cashService.getMinBanknote(currencyType).get()) < 0) {
             System.out.println("Sorry, the min sum should be 5 and more");
             return false;
         }
