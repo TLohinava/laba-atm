@@ -54,7 +54,7 @@ public class Utils {
                         System.out.println("Sorry, the function you selected is incorrect!");
                         break;
                 }
-                System.out.println("Continue? Yes / No");
+                System.out.println("Continue? Y / N");
                 answer = input.next().charAt(0);
             }
             System.out.println("Thank you for use!");
@@ -83,7 +83,6 @@ public class Utils {
         CurrencyType inputType = selectCurrencyType();
         CurrencyType cardType = card.getCurrencyType();
         BigDecimal convertSum = atm.changeCurrencyType(sum, inputType, cardType);
-        convertSum = convertSum.setScale(1, BigDecimal.ROUND_UP);
 
         boolean checkAtm = atm.checkBalance(sum, inputType);
         boolean checkCard = card.checkBalance(convertSum, cardType);
