@@ -3,6 +3,8 @@ package com.solvd.atm;
 import com.solvd.atm.domain.Atm;
 import com.solvd.atm.domain.Card;
 import com.solvd.atm.domain.CurrencyType;
+import com.solvd.atm.service.CashService;
+import com.solvd.atm.service.impl.CashServiceImpl;
 
 import java.math.BigDecimal;
 import java.util.InputMismatchException;
@@ -32,13 +34,14 @@ public class Utils {
         return sum;
     }
 
-//    private boolean checkMinSum(BigDecimal sum, CurrencyType currencyType) {
-//        if (sum.compareTo(CashService.getMinBanknote()) < 0) {
-//            System.out.println("Sorry, the min sum should be 5 and more");
-//            return false;
-//        }
-//        return true;
-//    }
+    public static boolean checkMinSum(BigDecimal sum, CurrencyType currencyType) {
+        CashService cashService = new CashServiceImpl();
+        if (sum.compareTo(cashService.getMinBanknote(currencyType)) < 0) {
+            System.out.println("Sorry, the min sum should be 5 and more");
+            return false;
+        }
+        return true;
+    }
 
     public static void withdrawCash(Atm atm, Card card) {
         CurrencyType currencyType = chooseCurrency();
@@ -49,37 +52,6 @@ public class Utils {
             card.withdraw(sum);
             atm.withdraw(sum);
         }
-    }
-
-    private static boolean checkMinSum(BigDecimal sum, CurrencyType currencyType) {
-        boolean result = true;
-        if (currencyType == CurrencyType.BYN) {
-            if (sum.compareTo(BigDecimal.valueOf(5)) < 0) {
-                System.out.println("Sorry, the min sum should be 5 and more");
-                result = false;
-            }
-        } else if (currencyType == CurrencyType.RUB) {
-            if (sum.compareTo(BigDecimal.valueOf(50)) < 0) {
-                System.out.println("Sorry, the min sum should be 50 and more");
-                result = false;
-            }
-        } else if (currencyType == CurrencyType.EUR) {
-            if (sum.compareTo(BigDecimal.valueOf(5)) < 0) {
-                System.out.println("Sorry, the min sum should be 5 and more");
-                result = false;
-            }
-        } else if (currencyType == CurrencyType.USD) {
-            if (sum.compareTo(BigDecimal.valueOf(5)) < 0) {
-                System.out.println("Sorry, the min sum should be 5 and more");
-                result = false;
-            }
-        } else if (currencyType == CurrencyType.CNY) {
-            if (sum.compareTo(BigDecimal.valueOf(5)) < 0) {
-                System.out.println("Sorry, the min sum should be 5 and more");
-                result = false;
-            }
-        }
-        return result;
     }
 
     public static CurrencyType chooseCurrency() {

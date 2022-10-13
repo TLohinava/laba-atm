@@ -22,10 +22,6 @@
         where denomination=#{denomination} and currency_type=#{currencyType};
     </update>
 
-    <select id="getMinBanknote" resultMap="CashResultMap">
-        select min(denomination) as min from cash where currency_type = #{currencyType}
-    </select>
-
     <resultMap id="CashResultMap" type="com.solvd.atm.domain.Cash" autoMapping="false">
         <id property="id" column="id"/>
         <result property= "currencyType" column="currency_type"/>
