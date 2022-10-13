@@ -323,7 +323,6 @@ public class Utils {
             System.out.println("The option you've entered is not available. Please try again");
             chooseOptions(map, sum);
         }
-        System.out.println("Please take your cash!");
         return chosenOption;
     }
 
