@@ -1,6 +1,10 @@
 package com.solvd.atm;
 
 import com.solvd.atm.domain.*;
+import com.solvd.atm.service.AtmService;
+import com.solvd.atm.service.CardService;
+import com.solvd.atm.service.impl.AtmServiceImpl;
+import com.solvd.atm.service.impl.CardServiceImpl;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -169,7 +173,10 @@ public class MainClass {
 
 //        CashService cashService = new CashServiceImpl();
 //        System.out.println(cashService.getMinBanknote(CurrencyType.RUB));
+//        CardService cs = new CardServiceImpl();
+//        Card dbCard = cs.read(1l).get();
+//
+//        Utils.selectFunction(atm2, dbCard);
 
-        Utils.selectFunction(atm2, card2);
     }
 }

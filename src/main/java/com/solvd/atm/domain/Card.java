@@ -1,5 +1,8 @@
 package com.solvd.atm.domain;
 
+import com.solvd.atm.service.CardService;
+import com.solvd.atm.service.impl.CardServiceImpl;
+
 import java.math.BigDecimal;
 
 public class Card implements ICheck, IWithdraw {
@@ -23,8 +26,10 @@ public class Card implements ICheck, IWithdraw {
 
     @Override
     public void withdraw(BigDecimal sum) {
-            BigDecimal withdrawnSum = this.getBalance().subtract(sum);
-            this.setBalance(withdrawnSum);
+        CardService cs = new CardServiceImpl();
+        BigDecimal withdrawnSum = this.getBalance().subtract(sum);
+        this.setBalance(withdrawnSum);
+        cs.update(this);
     }
 
     public Long getId() {

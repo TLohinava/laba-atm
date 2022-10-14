@@ -1,13 +1,10 @@
 package com.solvd.atm;
 
-import com.solvd.atm.domain.Atm;
-import com.solvd.atm.domain.Card;
-import com.solvd.atm.domain.CurrencyType;
+import com.solvd.atm.domain.*;
 import com.solvd.atm.service.CashService;
 import com.solvd.atm.service.impl.CashServiceImpl;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.math.*;
 import java.util.*;
 
 public class Utils {

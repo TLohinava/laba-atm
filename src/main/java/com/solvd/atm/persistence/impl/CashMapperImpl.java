@@ -2,7 +2,6 @@ package com.solvd.atm.persistence.impl;
 
 import com.solvd.atm.domain.Cash;
 import com.solvd.atm.domain.CurrencyType;
-import com.solvd.atm.persistence.AtmRepository;
 import com.solvd.atm.persistence.CashRepository;
 import com.solvd.atm.persistence.MyBatisConfig;
 import org.apache.ibatis.session.ResultContext;
