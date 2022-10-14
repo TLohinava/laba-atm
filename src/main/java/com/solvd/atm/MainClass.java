@@ -3,21 +3,13 @@ package com.solvd.atm;
 import com.solvd.atm.domain.*;
 import com.solvd.atm.service.*;
 import com.solvd.atm.service.impl.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MainClass {
 
-    private static final Logger LOGGER = LogManager.getLogger(MainClass.class);
-
     public static void main(String[] args) {
-
         Address address1 = new Address();
         address1.setCity("Minsk");
         address1.setStreet("Kolasa");
@@ -183,13 +175,15 @@ public class MainClass {
 //        CashService cs = new CashServiceImpl();
 //        cs.updateBatch(cashList);
 
-        ClientService clientService = new ClientServiceImpl();
-        System.out.println(clientService.read(2L));
+//        ClientService clientService = new ClientServiceImpl();
+//        System.out.println(clientService.read(2L));
 
 //        BankService bankService = new BankServiceImpl();
 //        System.out.println(bankService.read(2L));
 
 //        CashService cashService = new CashServiceImpl();
 //        System.out.println(cashService.getMinBanknote(CurrencyType.RUB));
+
+        Utils.selectFunction(atm2, card2);
     }
 }
