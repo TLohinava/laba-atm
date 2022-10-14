@@ -2,7 +2,6 @@ package com.solvd.atm.persistence.impl;
 
 import com.solvd.atm.domain.Cash;
 import com.solvd.atm.domain.CurrencyType;
-import com.solvd.atm.persistence.AtmRepository;
 import com.solvd.atm.persistence.CashRepository;
 import com.solvd.atm.persistence.MyBatisConfig;
 import org.apache.ibatis.session.ResultContext;
@@ -25,10 +24,10 @@ public class CashMapperImpl implements CashRepository {
     }
 
     @Override
-    public void create(List<Cash> cashList) {
+    public void create(Long atmId, List<Cash> cashList) {
         try (SqlSession session = MyBatisConfig.getSqlSessionFactory().openSession(true)) {
             CashRepository mapper = session.getMapper(CashRepository.class);
-            mapper.create(cashList);
+            mapper.create(atmId, cashList);
         }
     }
 
@@ -36,7 +35,7 @@ public class CashMapperImpl implements CashRepository {
     public void update(Cash cash) {
         try (SqlSession session = MyBatisConfig.getSqlSessionFactory().openSession(true)) {
             CashRepository mapper = session.getMapper(CashRepository.class);
-                mapper.update(cash);
+            mapper.update(cash);
         }
     }
 
@@ -44,7 +43,7 @@ public class CashMapperImpl implements CashRepository {
     public void updateBatch(List<Cash> cashList) {
         try (SqlSession session = MyBatisConfig.getSqlSessionFactory().openSession(true)) {
             CashRepository mapper = session.getMapper(CashRepository.class);
-            for(Cash cash : cashList) {
+            for (Cash cash : cashList) {
                 mapper.update(cash);
             }
         }
@@ -58,7 +57,7 @@ public class CashMapperImpl implements CashRepository {
 
                 @Override
                 public void handleResult(ResultContext context) {
-                    final Cash complex = (Cash)context.getResultObject();
+                    final Cash complex = (Cash) context.getResultObject();
                     if (!atmCash.containsKey(complex.getCurrencyType())) {
                         atmCash.put(complex.getCurrencyType(), new HashMap<>());
                     }

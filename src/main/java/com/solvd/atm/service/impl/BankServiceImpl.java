@@ -30,21 +30,20 @@ public class BankServiceImpl implements BankService {
         bank.setId(null);
         bankRepository.create(bank);
 
-        if (bank.getAtms() != null) {
-            List<Atm> atms = bank.getAtms().stream()
-                    .map(atm -> atmService.create(bank.getId(), atm.getAddress().getId(), atm))
-                    .collect(Collectors.toList());
-            bank.setAtms(atms);
-        }
-
-        if (bank.getClients() != null) {
-            List<Client> clients = bank.getClients().stream()
-                    .map(client -> clientService.create(client.getAccount().getId(), client))
-                    .collect(Collectors.toList());
-            bank.setClients(clients);
-        }
-
-        bank.getClients().forEach(client -> bankRepository.createClientConnection(bank, client));
+//        if (bank.getAtms() != null) {
+//            List<Atm> atms = bank.getAtms().stream()
+//                    .map(atm -> atmService.create(bank.getId(), atm.getAddress().getId(), atm))
+//                    .collect(Collectors.toList());
+//            bank.setAtms(atms);
+//        }
+//
+//        if (bank.getClients() != null) {
+//            List<Client> clients = bank.getClients().stream()
+//                    .map(client -> clientService.create(client.getAccount().getId(), client))
+//                    .collect(Collectors.toList());
+//            bank.setClients(clients);
+//        }
+//        bank.getClients().forEach(client -> bankRepository.createClientConnection(bank, client));
 
         return bank;
     }

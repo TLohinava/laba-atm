@@ -26,12 +26,12 @@ public class AccountServiceImpl implements AccountService {
         account.setId(null);
         accountRepository.create(account);
 
-        if (account.getCards() != null) {
-            List<Card> cards = account.getCards().stream()
-                    .map(card -> cardService.create(account.getId(), card))
-                    .collect(Collectors.toList());
-            account.setCards(cards);
-        }
+//        if (account.getCards() != null) {
+//            List<Card> cards = account.getCards().stream()
+//                    .map(card -> cardService.create(account.getId(), card))
+//                    .collect(Collectors.toList());
+//            account.setCards(cards);
+//        }
         return account;
     }
 
