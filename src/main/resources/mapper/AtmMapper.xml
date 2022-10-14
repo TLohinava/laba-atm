@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace ="com.solvd.atm.persistence.AtmRepository">
+    <insert id="create" keyColumn="id" keyProperty="atm.id" useGeneratedKeys="true">
+        insert into atms (bank_id, address_id) values (#{bankId}, #{addressId})
+    </insert>
+
+    <select id="read" resultMap="AtmResultMap">
+        select id, bank_id, address_id from atms where id = #{id}
+    </select>
+
+    <resultMap id="AtmResultMap" type="com.solvd.atm.domain.Atm" autoMapping="false">
+        <id property="id" column="id"/>
+        <association property= "balance" resultMap="com.solvd.atm.persistence.CashRepository.CashResultMap"/>
+        <association property="bank" resultMap="com.solvd.atm.persistence.BankRepository.BankResultMap"/>
+        <association property="address" resultMap="com.solvd.atm.persistence.AddressRepository.AddressResultMap"/>
+    </resultMap>
+
+    <update id="update" useGeneratedKeys="false">
+        update atms set bank_id = #{bankId}, address_id = #{addressId} where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from atms where id = #{id}
+    </delete>
+</mapper>

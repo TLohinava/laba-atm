@@ -3,9 +3,7 @@ package com.solvd.atm;
 import com.solvd.atm.domain.*;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MainClass {
 
@@ -21,10 +19,10 @@ public class MainClass {
         address2.setHouse(32);
 
         Card card1 = new Card();
-        card1.setNumber(535140215456175656L);
+        card1.setNumber(5351402154561756L);
         card1.setPin(1234);
         card1.setBalance(BigDecimal.valueOf(350));
-        card1.setCurrencyType(CurrencyType.valueOf("EUR"));
+        card1.setCurrencyType(CurrencyType.valueOf("BYN"));
 
         Card card2 = new Card();
         card2.setNumber(5351402154234567L);
@@ -51,18 +49,18 @@ public class MainClass {
         card5.setCurrencyType(CurrencyType.valueOf("RUB"));
 
         Account account1 = new Account();
-        account1.setNumber("BY06ALFA30128888777766665555");
+        account1.setNumber("BY06ALFA3012888877776666");
         List<Card> firstAccountCards = List.of(card1, card2);
         account1.setCards(firstAccountCards);
 
         Account account2 = new Account();
-        account2.setNumber("BY04ALFA301433355567678989");
+        account2.setNumber("BY04ALFA3014333555676789");
         List<Card> secondAccountCards = List.of(card3, card4, card5);
         account1.setCards(secondAccountCards);
 
         Client client1 = new Client();
-        client1.setName("Olga");
-        client1.setSurname("Orlova");
+        client1.setName("Dima");
+        client1.setSurname("Orlov");
         client1.setAccount(account1);
 
         Client client2 = new Client();
@@ -129,7 +127,7 @@ public class MainClass {
         atm1.setBalance(firstAtmBalance);
 
         Atm atm2 = new Atm();
-        atm1.setAddress(address2);
+        atm2.setAddress(address2);
         Map<CurrencyType, Map<BigDecimal, BigDecimal>> secondAtmBalance = new HashMap<>();
         secondAtmBalance.put(CurrencyType.valueOf("BYN"), bynDenominations2);
         secondAtmBalance.put(CurrencyType.valueOf("RUB"), rubDenominations2);
@@ -142,5 +140,36 @@ public class MainClass {
         alfaBank.setAtms(alfaAtms);
         List<Client> alfaClients = List.of(client1, client2);
         alfaBank.setClients(alfaClients);
+
+        Cash cash = new Cash();
+        cash.setCurrencyType(CurrencyType.USD);
+        cash.setDenomination(new BigDecimal(10));
+        cash.setQuantity(new BigDecimal(8));
+
+        Cash cash1 = new Cash();
+        cash1.setCurrencyType(CurrencyType.USD);
+        cash1.setDenomination(new BigDecimal(20));
+        cash1.setQuantity(new BigDecimal(6));
+
+        Cash cash2 = new Cash();
+        cash2.setCurrencyType(CurrencyType.USD);
+        cash2.setDenomination(new BigDecimal(50));
+        cash2.setQuantity(new BigDecimal(3));
+
+        List<Cash> cashList = List.of(cash, cash1, cash2);
+
+//        CashService cs = new CashServiceImpl();
+//        cs.updateBatch(cashList);
+
+//        ClientService clientService = new ClientServiceImpl();
+//        System.out.println(clientService.read(2L));
+
+//        BankService bankService = new BankServiceImpl();
+//        System.out.println(bankService.read(2L));
+
+//        CashService cashService = new CashServiceImpl();
+//        System.out.println(cashService.getMinBanknote(CurrencyType.RUB));
+
+        Utils.selectFunction(atm2, card2);
     }
 }

@@ -3,6 +3,8 @@ package com.solvd.atm;
 import com.solvd.atm.domain.Atm;
 import com.solvd.atm.domain.Card;
 import com.solvd.atm.domain.CurrencyType;
+import com.solvd.atm.service.CashService;
+import com.solvd.atm.service.impl.CashServiceImpl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -11,7 +13,7 @@ import java.util.*;
 public class Utils {
 
     public static void selectFunction(Atm atm, Card card) {
-        try (Scanner input = new Scanner(System.in)) {
+        try(Scanner input = new Scanner(System.in)) {
             boolean correctData = true;
 
             System.out.println("--------- Welcome to the ATM ---------");
@@ -62,25 +64,25 @@ public class Utils {
         }
     }
 
-    public static BigDecimal enterSum(Scanner scanner) {
+    public static BigDecimal enterSum(Scanner scanner, CurrencyType currencyType) {
         BigDecimal sum;
-        System.out.println("Please enter the withdrawal amount:");
+        System.out.println("Please enter the required sum: ");
         if (scanner.hasNextBigDecimal()) {
             sum = scanner.nextBigDecimal();
-            if (sum.compareTo(BigDecimal.ZERO) <= 0) {
-                System.out.println("Sorry, the sum cannot be 0 or less. ");
-                sum = enterSum(scanner);
+            if (!checkMinSum(sum, currencyType)) {
+                System.out.println("Sorry the sum is less than min");
+                sum = enterSum(scanner, currencyType);
             }
         } else {
             System.out.println("Sorry, the sum should be numeric. ");
-            sum = enterSum(scanner);
+            sum = enterSum(scanner, currencyType);
         }
         return sum;
     }
 
     public static void withdrawCash(Atm atm, Card card, Scanner scanner) {
-        BigDecimal sum = enterSum(scanner);
         CurrencyType inputType = selectCurrencyType(scanner);
+        BigDecimal sum = enterSum(scanner, inputType);
         CurrencyType cardType = card.getCurrencyType();
         BigDecimal convertSum = atm.changeCurrencyType(sum, inputType, cardType);
 
@@ -93,8 +95,17 @@ public class Utils {
         }
     }
 
+    public static boolean checkMinSum(BigDecimal sum, CurrencyType currencyType) {
+        CashService cashService = new CashServiceImpl();
+        if (sum.compareTo(cashService.getMinBanknote(currencyType).get()) < 0) {
+            System.out.println("Sorry, the min sum should be 5 and more");
+            return false;
+        }
+        return true;
+    }
+
     public static CurrencyType selectCurrencyType(Scanner input) {
-        CurrencyType inputType = null;
+        CurrencyType inputType;
 
         System.out.println("What type of currency do you need? 1. BYN 2. RUB 3. EUR 4. USD 5. CNY");
         int choice = input.nextInt();
@@ -116,6 +127,7 @@ public class Utils {
                 break;
             default:
                 System.out.println("Sorry, the type of currency you selected is incorrect!");
+                inputType = selectCurrencyType(input);
                 break;
         }
         return inputType;

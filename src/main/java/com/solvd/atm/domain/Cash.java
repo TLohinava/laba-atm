@@ -7,6 +7,7 @@ public class Cash {
     private Long id;
     private BigDecimal denomination;
     private BigDecimal quantity;
+    private CurrencyType currencyType;
 
     public Long getId() {
         return id;
@@ -30,5 +31,13 @@ public class Cash {
 
     public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
+    }
+
+    public CurrencyType getCurrencyType() {
+        return currencyType;
+    }
+
+    public void setCurrencyType(CurrencyType currencyType) {
+        this.currencyType = currencyType;
     }
 }
