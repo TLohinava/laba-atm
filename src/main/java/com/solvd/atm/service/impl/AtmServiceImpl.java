@@ -5,8 +5,6 @@ import com.solvd.atm.persistence.AtmRepository;
 import com.solvd.atm.persistence.impl.AtmMapperImpl;
 import com.solvd.atm.service.AtmService;
 
-import java.util.Optional;
-
 public class AtmServiceImpl implements AtmService {
 
     private final AtmRepository atmRepository;
@@ -23,8 +21,9 @@ public class AtmServiceImpl implements AtmService {
     }
 
     @Override
-    public Optional<Atm> read(Long id) {
-        return atmRepository.read(id);
+    public Atm read(Long id) {
+        return atmRepository.read(id)
+                        .orElseThrow();
     }
 
     @Override
