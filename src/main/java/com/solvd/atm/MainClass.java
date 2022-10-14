@@ -1,6 +1,14 @@
 package com.solvd.atm;
 
 import com.solvd.atm.domain.*;
+import com.solvd.atm.service.AccountService;
+import com.solvd.atm.service.AddressService;
+import com.solvd.atm.service.BankService;
+import com.solvd.atm.service.ClientService;
+import com.solvd.atm.service.impl.AccountServiceImpl;
+import com.solvd.atm.service.impl.AddressServiceImpl;
+import com.solvd.atm.service.impl.BankServiceImpl;
+import com.solvd.atm.service.impl.ClientServiceImpl;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -11,7 +19,7 @@ public class MainClass {
         Address address1 = new Address();
         address1.setCity("Minsk");
         address1.setStreet("Kolasa");
-        address1.setHouse(15);
+        address1.setHouse(25);
 
         Address address2 = new Address();
         address2.setCity("Minsk");
@@ -49,18 +57,21 @@ public class MainClass {
         card5.setCurrencyType(CurrencyType.valueOf("RUB"));
 
         Account account1 = new Account();
-        account1.setNumber("BY06ALFA3012888877776666");
+        account1.setId(5L);
+        account1.setNumber("BY06ALFA3012998877774466");
         List<Card> firstAccountCards = List.of(card1, card2);
         account1.setCards(firstAccountCards);
 
         Account account2 = new Account();
+        account2.setId(2L);
         account2.setNumber("BY04ALFA3014333555676789");
         List<Card> secondAccountCards = List.of(card3, card4, card5);
         account1.setCards(secondAccountCards);
 
         Client client1 = new Client();
+        client1.setId(4L);
         client1.setName("Dima");
-        client1.setSurname("Orlov");
+        client1.setSurname("Dimon");
         client1.setAccount(account1);
 
         Client client2 = new Client();
@@ -162,10 +173,16 @@ public class MainClass {
 //        cs.updateBatch(cashList);
 
 //        ClientService clientService = new ClientServiceImpl();
-//        System.out.println(clientService.read(2L));
+//        System.out.println(clientService.read(3L));
+
+//        AccountService accountService = new AccountServiceImpl();
+//        accountService.deleteById(3L);
+
+//        AddressService addressService = new AddressServiceImpl();
+//        System.out.println(addressService.read(1L));
 
 //        BankService bankService = new BankServiceImpl();
-//        System.out.println(bankService.read(2L));
+//        System.out.println(bankService.read(3L));
 
 //        CashService cashService = new CashServiceImpl();
 //        System.out.println(cashService.getMinBanknote(CurrencyType.RUB));

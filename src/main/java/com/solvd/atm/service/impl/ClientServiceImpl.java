@@ -1,11 +1,10 @@
 package com.solvd.atm.service.impl;
 
 import com.solvd.atm.domain.Client;
+import com.solvd.atm.domain.exception.QueryException;
 import com.solvd.atm.persistence.ClientRepository;
 import com.solvd.atm.persistence.impl.ClientMapperImpl;
 import com.solvd.atm.service.ClientService;
-
-import java.util.Optional;
 
 public class ClientServiceImpl implements ClientService {
 
@@ -23,8 +22,9 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Optional<Client> read(Long id) {
-        return clientRepository.read(id);
+    public Client read(Long id) {
+        return clientRepository.read(id)
+                .orElseThrow(() -> new QueryException("No clients found"));
     }
 
     @Override

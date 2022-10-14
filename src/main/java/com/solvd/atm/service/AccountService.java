@@ -8,7 +8,7 @@ public interface AccountService {
 
     Account create(Account account);
 
-    Optional<Account> read(Long id);
+    Account read(Long id);
 
     void update(Account account);
 
