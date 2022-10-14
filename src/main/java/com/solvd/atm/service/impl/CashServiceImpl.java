@@ -28,8 +28,8 @@ public class CashServiceImpl implements CashService {
     }
 
     @Override
-    public void create(List<Cash> cashList) {
-        cashRepository.create(cashList);
+    public void create(Long atmId, List<Cash> cashList) {
+        cashRepository.create(atmId, cashList);
     }
 
     @Override

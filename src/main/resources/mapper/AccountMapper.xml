@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace ="com.solvd.atm.persistence.AccountRepository">
+<mapper namespace="com.solvd.atm.persistence.AccountRepository">
     <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
         insert into accounts (number) value (#{number})
     </insert>
 
-    <select id= "read" resultMap="AccountResultMap">
-        select id, number, cards from accounts where id = #{id}
+    <select id="read" resultMap="AccountResultMap">
+        select
+        ac.id as account_id, ac.number as account_number,
+        c.id as card_id, c.number as card_number, c.pin as card_pin, c.balance as card_balance, c.currency_type as card_currency_type
+        from accounts ac
+        left join cards c
+        on c.account_id = ac.id
+        where ac.id = #{id}
     </select>
 
     <resultMap id="AccountResultMap" type="com.solvd.atm.domain.Account" autoMapping="false">
-        <id property="id" column="id"/>
-        <result property= "number" column="number"/>
-        <collection property="cards" resultMap="com.solvd.atm.persistence.CardRepository.CardResultMap"/>
+        <id property="id" column="account_id"/>
+        <result property="number" column="account_number"/>
+        <collection property="cards" columnPrefix="card_"
+                    resultMap="com.solvd.atm.persistence.CardRepository.CardResultMap"/>
     </resultMap>
 
-    <update id= "update" useGeneratedKeys="false">
+    <update id="update" useGeneratedKeys="false">
         update accounts set number = #{number} where id = #{id}
     </update>
 
-    <delete id= "deleteById">
+    <delete id="deleteById">
         delete from accounts where id = #{id}
     </delete>
 </mapper>

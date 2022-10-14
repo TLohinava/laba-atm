@@ -14,7 +14,7 @@ public interface CashService {
 
     List<Cash> read();
 
-    void create(List<Cash> cashList);
+    void create(Long atmId, List<Cash> cashList);
 
     void updateBatch(List<Cash> cashList);
 
