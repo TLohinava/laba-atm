@@ -1,12 +1,8 @@
 package com.solvd.atm;
 
 import com.solvd.atm.domain.*;
-import com.solvd.atm.service.AtmService;
-import com.solvd.atm.service.BankService;
-import com.solvd.atm.service.CashService;
-import com.solvd.atm.service.impl.AtmServiceImpl;
-import com.solvd.atm.service.impl.BankServiceImpl;
-import com.solvd.atm.service.impl.CashServiceImpl;
+import com.solvd.atm.service.*;
+import com.solvd.atm.service.impl.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -73,8 +69,8 @@ public class MainClass {
         account1.setCards(secondAccountCards);
 
         Client client1 = new Client();
-        client1.setName("Olga");
-        client1.setSurname("Orlova");
+        client1.setName("Dima");
+        client1.setSurname("Orlov");
         client1.setAccount(account1);
 
         Client client2 = new Client();
@@ -155,16 +151,17 @@ public class MainClass {
         List<Client> alfaClients = List.of(client1, client2);
         alfaBank.setClients(alfaClients);
 
-//        AccountService accountService = new AccountServiceImpl();
-//        accountService.create(account2);
+        AccountService accountService = new AccountServiceImpl();
+        accountService.create(account2);
 
 //        AddressService addressService = new AddressServiceImpl();
 //        addressService.delete(1L);
 
 //        CardService cardService = new CardServiceImpl();
-//        System.out.println(cardService.read(3L));
+//        System.out.println(cardService.read(5L));
 
 //        AtmService atmService = new AtmServiceImpl();
+//        atmService.update(atm1);
 
         Cash cash = new Cash();
         cash.setCurrencyType(CurrencyType.USD);
@@ -186,13 +183,13 @@ public class MainClass {
 //        CashService cs = new CashServiceImpl();
 //        cs.updateBatch(cashList);
 
-//        ClientService clientService = new ClientServiceImpl();
-//        clientService.update(client1);
+        ClientService clientService = new ClientServiceImpl();
+        System.out.println(clientService.read(2L));
 
 //        BankService bankService = new BankServiceImpl();
-//        bankService.create(alfaBank);
+//        System.out.println(bankService.read(2L));
 
-        CashService cashService = new CashServiceImpl();
-        System.out.println(cashService.getMinBanknote(CurrencyType.BYN));
+//        CashService cashService = new CashServiceImpl();
+//        System.out.println(cashService.getMinBanknote(CurrencyType.RUB));
     }
 }

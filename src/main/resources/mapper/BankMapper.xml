@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace ="com.solvd.atm.persistence.BankRepository">
-    <insert id="create" keyColumn="id" keyProperty="bank.id" useGeneratedKeys="true">
-        insert into banks name value #{bank.name}
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+        insert into banks (name) value (#{name})
     </insert>
 
     <insert id="createClientConnection" keyColumn="id" useGeneratedKeys="true">

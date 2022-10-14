@@ -1,10 +1,7 @@
 package com.solvd.atm.service;
 
 import com.solvd.atm.domain.Atm;
-import com.solvd.atm.domain.CurrencyType;
 
-import java.math.BigDecimal;
-import java.util.Map;
 import java.util.Optional;
 
 public interface AtmService {

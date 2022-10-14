@@ -28,6 +28,7 @@ public class BankServiceImpl implements BankService {
     @Override
     public Bank create(Bank bank) {
         bank.setId(null);
+        bankRepository.create(bank);
 
         if (bank.getAtms() != null) {
             List<Atm> atms = bank.getAtms().stream()
@@ -43,8 +44,8 @@ public class BankServiceImpl implements BankService {
             bank.setClients(clients);
         }
 
-        bankRepository.create(bank);
         bank.getClients().forEach(client -> bankRepository.createClientConnection(bank, client));
+
         return bank;
     }
 

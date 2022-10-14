@@ -2,8 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace ="com.solvd.atm.persistence.AtmRepository">
     <insert id="create" keyColumn="id" keyProperty="atm.id" useGeneratedKeys="true">
-        insert into atms (bank_id, address_id)
-        values #{bankId}, #{addressId}
+        insert into atms (bank_id, address_id) values (#{bankId}, #{addressId})
     </insert>
 
     <select id="read" resultMap="AtmResultMap">
@@ -18,8 +17,7 @@
     </resultMap>
 
     <update id="update" useGeneratedKeys="false">
-        update atms set bank_id = #{bankId}, address_id = #{addressId}, balance = #{balance},
-        currency_type = #{currencyType} where id = #{id}
+        update atms set bank_id = #{bankId}, address_id = #{addressId} where id = #{id}
     </update>
 
     <delete id="delete">
