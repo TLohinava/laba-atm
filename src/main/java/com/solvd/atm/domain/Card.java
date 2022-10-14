@@ -66,4 +66,15 @@ public class Card implements ICheck, IWithdraw {
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "id=" + id +
+                ", number=" + number +
+                ", pin=" + pin +
+                ", balance=" + balance +
+                ", currencyType=" + currencyType +
+                '}';
+    }
 }

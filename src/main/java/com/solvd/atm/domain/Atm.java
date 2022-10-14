@@ -67,4 +67,13 @@ public class Atm implements ICheck, IWithdraw, IConvert {
     public void setBalance(Map<CurrencyType, Map<BigDecimal, BigDecimal>> balance) {
         this.balance = balance;
     }
+
+    @Override
+    public String toString() {
+        return "Atm{" +
+                "id=" + id +
+                ", address=" + address +
+                ", balance=" + balance +
+                '}';
+    }
 }

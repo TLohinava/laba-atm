@@ -1,14 +1,18 @@
 package com.solvd.atm;
 
-import com.solvd.atm.domain.Atm;
-import com.solvd.atm.domain.Card;
-import com.solvd.atm.domain.CurrencyType;
+import com.solvd.atm.domain.*;
+import com.solvd.atm.service.CashService;
+import com.solvd.atm.service.impl.CashServiceImpl;
 
 import java.math.BigDecimal;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 import java.math.RoundingMode;
 import java.util.*;
 
 public class Utils {
+
+    private static final int CURRENCY_TYPE_NUMBER = 5;
 
     public static void selectFunction(Atm atm, Card card) {
         Scanner input = new Scanner(System.in);
@@ -61,7 +65,7 @@ public class Utils {
         }
     }
 
-    public static BigDecimal enterSum() {
+    public static BigDecimal enterSum(CurrencyType currencyType) {
         Scanner scanner = new Scanner(System.in);
         BigDecimal sum;
         System.out.println("Please enter the withdrawal amount:");
@@ -69,23 +73,36 @@ public class Utils {
             sum = scanner.nextBigDecimal();
             if (sum.compareTo(BigDecimal.ZERO) <= 0) {
                 System.out.println("Sorry, the sum cannot be 0 or less. ");
-                sum = enterSum();
+                sum = enterSum(currencyType);
+            } else if (!checkMinSum(sum, currencyType)) {
+                System.out.println("Sorry the sum is less than min");
+                sum = enterSum(currencyType);
             }
         } else {
             System.out.println("Sorry, the sum should be numeric. ");
-            sum = enterSum();
+            sum = enterSum(currencyType);
         }
         return sum;
     }
 
+    public static boolean checkMinSum(BigDecimal sum, CurrencyType currencyType) {
+        CashService cashService = new CashServiceImpl();
+        if (sum.compareTo(cashService.getMinBanknote(currencyType).get()) < 0) {
+            System.out.println("Sorry, the min sum should be 5 and more");
+            return false;
+        }
+        return true;
+    }
+
     public static void withdrawCash(Atm atm, Card card) {
-        BigDecimal sum = enterSum();
         CurrencyType inputType = selectCurrencyType();
+        BigDecimal sum = enterSum(inputType);
         CurrencyType cardType = card.getCurrencyType();
         BigDecimal convertSum = atm.changeCurrencyType(sum, inputType, cardType);
 
         boolean checkAtm = atm.checkBalance(sum, inputType);
         boolean checkCard = card.checkBalance(convertSum, cardType);
+
         if (checkAtm && checkCard) {
             atm.withdraw(sum);
             card.withdraw(convertSum);
@@ -325,6 +342,45 @@ public class Utils {
         }
         System.out.println("Please take your cash!");
         return chosenOption;
+    }
+
+    public static CurrencyType chooseCurrency() {
+        CurrencyType currencyType = null;
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Please enter currency: 1. BYN 2. RUB 3. EUR 4. USD 5. CNY");
+            try {
+                int inputCurrency = scanner.nextInt();
+                if (inputCurrency < 1 || inputCurrency > CURRENCY_TYPE_NUMBER) {
+                    System.out.println("Sorry, the currency type doesn't exist");
+                    currencyType = chooseCurrency();
+                } else {
+                    switch (inputCurrency) {
+                        case 1:
+                            currencyType = CurrencyType.BYN;
+                            break;
+                        case 2:
+                            currencyType = CurrencyType.RUB;
+                            break;
+                        case 3:
+                            currencyType = CurrencyType.EUR;
+                            break;
+                        case 4:
+                            currencyType = CurrencyType.USD;
+                            break;
+                        case 5:
+                            currencyType = CurrencyType.CNY;
+                            break;
+                        default:
+                            System.out.println("Sorry, the currency you selected is incorrect!");
+                            break;
+                    }
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("The input type is incorrect, enter a digit from 1 to 5");
+                currencyType = chooseCurrency();
+            }
+        }
+        return currencyType;
     }
 
     public static void updateMap(Map<BigDecimal, BigDecimal> map, BigDecimal sum) {

@@ -45,4 +45,14 @@ public class Client implements IUseATM {
     public void setAccount(Account account) {
         this.account = account;
     }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", account=" + account +
+                '}';
+    }
 }
