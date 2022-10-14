@@ -1,8 +1,6 @@
 package com.solvd.atm;
 
 import com.solvd.atm.domain.*;
-import com.solvd.atm.service.*;
-import com.solvd.atm.service.impl.*;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -142,18 +140,6 @@ public class MainClass {
         alfaBank.setAtms(alfaAtms);
         List<Client> alfaClients = List.of(client1, client2);
         alfaBank.setClients(alfaClients);
-
-        AccountService accountService = new AccountServiceImpl();
-        accountService.create(account2);
-
-//        AddressService addressService = new AddressServiceImpl();
-//        addressService.delete(1L);
-
-//        CardService cardService = new CardServiceImpl();
-//        System.out.println(cardService.read(5L));
-
-//        AtmService atmService = new AtmServiceImpl();
-//        atmService.update(atm1);
 
         Cash cash = new Cash();
         cash.setCurrencyType(CurrencyType.USD);

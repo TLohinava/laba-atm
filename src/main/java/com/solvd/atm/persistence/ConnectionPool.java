@@ -1,8 +1,5 @@
 package com.solvd.atm.persistence;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,8 +9,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import static com.solvd.atm.persistence.Config.*;
 
 public class ConnectionPool {
-
-    private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
 
     private static ConnectionPool INSTANCE;
 
@@ -58,17 +53,15 @@ public class ConnectionPool {
             connection = freeConnections.take();
             givenAwayConnections.offer(connection);
         } catch (InterruptedException e) {
-            LOGGER.error(e);
+            System.out.println(e);
         }
         return connection;
     }
 
     public void releaseConnection(Connection connection) {
         givenAwayConnections.remove(connection);
-        LOGGER.info("Size of givenAwayConnections " + givenAwayConnections.size());
 
         freeConnections.offer(connection);
-        LOGGER.info("Size of freeConnections " + freeConnections.size());
     }
 }
 
