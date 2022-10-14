@@ -1,11 +1,10 @@
 package com.solvd.atm.service.impl;
 
 import com.solvd.atm.domain.Card;
+import com.solvd.atm.domain.exception.QueryException;
 import com.solvd.atm.persistence.CardRepository;
 import com.solvd.atm.persistence.impl.CardMapperImpl;
 import com.solvd.atm.service.CardService;
-
-import java.util.Optional;
 
 public class CardServiceImpl implements CardService {
 
@@ -23,8 +22,9 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Optional<Card> read(Long id) {
-        return cardRepository.read(id);
+    public Card read(Long id) {
+        return cardRepository.read(id)
+                .orElseThrow(() -> new QueryException("No cards found"));
     }
 
     @Override

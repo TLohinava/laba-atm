@@ -1,11 +1,10 @@
 package com.solvd.atm.service.impl;
 
 import com.solvd.atm.domain.Address;
+import com.solvd.atm.domain.exception.QueryException;
 import com.solvd.atm.persistence.AddressRepository;
 import com.solvd.atm.persistence.impl.AddressMapperImpl;
 import com.solvd.atm.service.AddressService;
-
-import java.util.Optional;
 
 public class AddressServiceImpl implements AddressService {
 
@@ -23,8 +22,9 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Optional<Address> read(Long id) {
-        return addressRepository.read(id);
+    public Address read(Long id) {
+        return addressRepository.read(id)
+                .orElseThrow(() -> new QueryException("No address found"));
     }
 
     @Override

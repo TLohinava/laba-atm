@@ -1,11 +1,18 @@
 package com.solvd.atm.domain;
 
-public class Client {
+import com.solvd.atm.Utils;
+
+public class Client implements IUseATM {
 
     private Long id;
     private String name;
     private String surname;
     private Account account;
+
+    @Override
+    public void getMenu(Atm atm, Card card) {
+        Utils.selectFunction(atm, card);
+    }
 
     public Long getId() {
         return id;

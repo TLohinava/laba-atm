@@ -1,27 +1,50 @@
 package com.solvd.atm.domain;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
+import com.solvd.atm.Utils;
 
-public class Atm implements ICheck, IWithdraw {
+import java.math.BigDecimal;
+import java.util.*;
+
+public class Atm implements ICheck, IWithdraw, IConvert {
 
     private Long id;
     private Address address;
     private Map<CurrencyType, Map<BigDecimal, BigDecimal>> balance;
 
-    @Override
-    public Boolean checkBalance(BigDecimal sum, CurrencyType currencyType) {
-//        return sum.compareTo(this.getBalance().get(currencyType)) <= 0;
-        return true;
+    public BigDecimal changeCurrencyType(BigDecimal sum, CurrencyType inputType, CurrencyType cardType) {
+        return Utils.convertInputType(sum, inputType, cardType);
     }
 
     @Override
     public void withdraw(BigDecimal sum) {
-        Map<BigDecimal, BigDecimal> withdrawnSum = this.getBalance().get(CurrencyType.BYN);
-        Map<CurrencyType, Map<BigDecimal, BigDecimal>> map = new HashMap<>();
-        map.put(CurrencyType.BYN, withdrawnSum);
-        this.setBalance(map);
+    }
+
+    public void withdraw(BigDecimal sum, Scanner scanner, CurrencyType type) {
+        Map<BigDecimal, BigDecimal> currentBalance = this.getBalance().get(type);
+        Utils.updateMap(currentBalance, sum, scanner);
+    }
+
+    @Override
+    public Boolean checkBalance(BigDecimal sum, CurrencyType type) {
+        boolean passedCheck = false;
+        Set<CurrencyType> availableTypes = this.getBalance().keySet();
+        BigDecimal availableSum = BigDecimal.ZERO;
+
+        if (availableTypes.contains(type)) {
+            for (Map.Entry<BigDecimal, BigDecimal> entry : this.getBalance().get(type).entrySet()) {
+                BigDecimal multiplySum = entry.getKey().multiply(entry.getValue());
+                availableSum = availableSum.add(multiplySum);
+            }
+        } else {
+            System.out.println("Sorry, the atm doesn't contain the type of currency you selected!");
+        }
+
+        if (sum.compareTo(availableSum) <= 0) {
+            passedCheck = true;
+        } else {
+            System.out.println("Unfortunately, this ATM doesn't have enough cash to continue with your transaction.");
+        }
+        return passedCheck;
     }
 
     public Long getId() {

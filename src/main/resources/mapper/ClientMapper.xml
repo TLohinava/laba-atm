@@ -1,26 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace ="com.solvd.atm.persistence.ClientRepository">
+<mapper namespace="com.solvd.atm.persistence.ClientRepository">
     <insert id="create" keyColumn="id" keyProperty="client.id" useGeneratedKeys="true">
         insert into clients (account_id, name, surname) values (#{accountId}, #{client.name}, #{client.surname})
     </insert>
 
-    <select id= "read" resultMap="ClientResultMap">
-        select id, account_id, name, surname from clients where id = #{id}
+    <select id="read" resultMap="ClientResultMap">
+        select
+        cl.id as client_id, cl.name as client_name, cl.surname as client_surname,
+        a.id as account_id, a.number as account_number,
+        c.id as card_id, c.number as card_number, c.pin as card_pin, c.balance as card_balance, c.currency_type as card_currency_type
+        from clients cl
+        left join accounts a
+        on cl.account_id = a.id
+        left join cards c
+        on c.account_id = a.id
+        where cl.id = #{client.id};
     </select>
 
     <resultMap id="ClientResultMap" type="com.solvd.atm.domain.Client" autoMapping="false">
-        <id property="id" column="id"/>
-        <result property= "name" column="name"/>
-        <result property= "surname" column="surname"/>
-        <association property= "account" resultMap="com.solvd.atm.persistence.AccountRepository.AccountResultMap"/>
+        <id property="id" column="client_id"/>
+        <result property="name" column="client_name"/>
+        <result property="surname" column="client_surname"/>
+        <association property="account"
+                     resultMap="com.solvd.atm.persistence.AccountRepository.AccountResultMap"/>
     </resultMap>
 
-    <update id= "update" useGeneratedKeys="false">
+    <update id="update" useGeneratedKeys="false">
         update clients set name = #{name}, surname = #{surname} where id = #{id}
     </update>
 
-    <delete id= "delete">
+    <delete id="deleteById">
         delete from clients where id = #{id}
     </delete>
 </mapper>
