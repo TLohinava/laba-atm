@@ -41,6 +41,7 @@ public class MainClass {
         card3.setCurrencyType(CurrencyType.valueOf("BYN"));
 
         Card card4 = new Card();
+        card4.setId(4L);
         card4.setNumber(5351402154555567L);
         card4.setPin(1267);
         card4.setBalance(BigDecimal.valueOf(1200));
@@ -193,7 +194,7 @@ public class MainClass {
 //        transactionService.create(1L, 1L, transaction);
 
 
-        Utils.selectFunction(atm1, card1);
+        Utils.selectFunction(atm1, card4);
 //        Utils.selectFunction(atm2, card2);
     }
 }

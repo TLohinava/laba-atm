@@ -105,15 +105,25 @@ public class Utils {
         BigDecimal sum = enterSum(scanner, inputType);
         CurrencyType cardType = card.getCurrencyType();
         BigDecimal convertSum = atm.changeCurrencyType(sum, inputType, cardType);
-
+        Transaction transaction = new Transaction();
+        if (inputType == cardType) {
+            transaction.setDateTime(LocalDateTime.now());
+            transaction.setMessage("Cash " + sum + " " + inputType);
+            transaction.setResult(Transaction.Result.SUCCESSFULLY);
+            TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
+        } else {
+            transaction.setDateTime(LocalDateTime.now());
+            transaction.setMessage("Cash  " + sum + " " + inputType);
+            transaction.setResult(Transaction.Result.SUCCESSFULLY);
+            TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
+        }
         boolean checkAtm = atm.checkBalance(sum, inputType);
         boolean checkCard = card.checkBalance(convertSum, cardType);
-        Transaction transaction = new Transaction();
         if (checkAtm && checkCard) {
             atm.withdraw(sum, scanner, inputType);
             card.withdraw(convertSum);
             transaction.setDateTime(LocalDateTime.now());
-            transaction.setMessage("Cash was withdrawn in the amount of " + sum);
+            transaction.setMessage("Cash was withdrawn in the amount of " + convertSum + " " + cardType);
             transaction.setResult(Transaction.Result.SUCCESSFULLY);
             TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
             System.out.println("Please take your cash!");
