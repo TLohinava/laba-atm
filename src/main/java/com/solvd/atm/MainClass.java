@@ -142,5 +142,7 @@ public class MainClass {
         alfaBank.setAtms(alfaAtms);
         List<Client> alfaClients = List.of(client1, client2);
         alfaBank.setClients(alfaClients);
+
+        Thread thread1 = new Thread(Utils.synchronizeObjects(client1, atm1, card1));
     }
 }

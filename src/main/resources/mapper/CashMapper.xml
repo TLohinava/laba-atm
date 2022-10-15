@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace ="com.solvd.atm.persistence.CashRepository">
+    <select id="getMap" resultMap="CashResultMap">
+        select currency_type, denomination, quantity from cash
+    </select>
+
+    <select id="read" resultMap="CashResultMap">
+        select currency_type, denomination, quantity from cash
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        insert into cash (currency_type, denomination, quantity) values
+        <foreach item="item" collection="list" separator=",">
+            (#{item.currencyType},#{item.denomination},#{item.quantity})
+        </foreach>
+    </insert>
+
+    <update id="update" useGeneratedKeys="false">
+        update cash
+        set quantity=#{quantity}
+        where denomination=#{denomination} and currency_type=#{currencyType};
+    </update>
+
+    <resultMap id="CashResultMap" type="com.solvd.atm.domain.Cash" autoMapping="false">
+        <id property="id" column="id"/>
+        <result property= "currencyType" column="currency_type"/>
+        <result property= "denomination" column="denomination"/>
+        <result property= "quantity" column="quantity"/>
+    </resultMap>
+</mapper>

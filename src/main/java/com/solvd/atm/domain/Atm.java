@@ -19,17 +19,18 @@ public class Atm implements ICheck, IWithdraw, IConvert {
     public void withdraw(BigDecimal sum) {
         Map<BigDecimal, BigDecimal> currentBalance = this.getBalance().get(CurrencyType.BYN);
         Utils.updateMap(currentBalance, sum);
+    }
 
     @Override
     public Boolean checkBalance(BigDecimal sum, CurrencyType currencyType) {
         boolean passedCheck = false;
         Set<CurrencyType> availableTypes = this.getBalance().keySet();
-        BigDecimal availableSum = BigDecimal.ZERO;
+        BigDecimal atmBalance = BigDecimal.ZERO;
         
-        if (availableTypes.contains(type)) {
-            for(Map.Entry<BigDecimal, BigDecimal> entry: this.getBalance().get(type).entrySet()){
+        if (availableTypes.contains(currencyType)) {
+            for(Map.Entry<BigDecimal, BigDecimal> entry: this.getBalance().get(currencyType).entrySet()){
                 BigDecimal multiplySum = entry.getKey().multiply(entry.getValue());
-                availableSum = availableSum.add(multiplySum);
+                atmBalance = atmBalance.add(multiplySum);
             }
         } else {
             System.out.println("Sorry, the atm doesn't contain the type of currency you selected!");
