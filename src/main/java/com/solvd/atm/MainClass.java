@@ -188,5 +188,8 @@ public class MainClass {
 //        System.out.println(cashService.getMinBanknote(CurrencyType.RUB));
 
         Utils.selectFunction(atm2, card2);
+
+        Thread thread1 = new Thread(Utils.synchronizeObjects(client1, atm1, card1));
+        thread1.start();
     }
 }
