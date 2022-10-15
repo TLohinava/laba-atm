@@ -22,10 +22,10 @@ public class Atm implements ICheck, IWithdraw, IConvert {
     }
 
     public void withdraw(BigDecimal sum, Scanner scanner, CurrencyType type) {
-        Map<CurrencyType, Map<BigDecimal, BigDecimal>> balanceMap = this.getBalance().stream()
-                .collect(Collectors.groupingBy(Cash::getCurrencyType,
-                        Collectors.toMap(Cash::getDenomination, Cash::getQuantity)));
-        Map<BigDecimal, BigDecimal> currentBalance = balanceMap.get(type);
+        Map<BigDecimal, BigDecimal> currentBalance = this.getBalance().stream()
+                .filter(i -> i.getCurrencyType().equals(type))
+                .collect(Collectors.toMap(Cash::getDenomination, Cash::getQuantity));
+
         String option = Utils.chooseOptions(currentBalance, sum, scanner);
         Utils.updateMap(this.id, option, type);
     }
@@ -35,7 +35,7 @@ public class Atm implements ICheck, IWithdraw, IConvert {
         boolean passedCheck = false;
 
         BigDecimal atmBalance = this.getBalance().stream()
-                .filter(c -> c.getCurrencyType() == type)
+                .filter(c -> c.getCurrencyType().equals(type))
                 .map(c -> c.getQuantity().multiply(c.getDenomination()))
                 .reduce(BigDecimal::add)
                 .orElseThrow(() -> new QueryException("Cannot sum up the digits"));
