@@ -1,6 +1,7 @@
 package com.solvd.atm.domain;
 
 import com.solvd.atm.Utils;
+import com.solvd.atm.domain.exception.QueryException;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -33,27 +34,18 @@ public class Atm implements ICheck, IWithdraw, IConvert {
     public Boolean checkBalance(BigDecimal sum, CurrencyType type) {
         boolean passedCheck = false;
 
-        Map<CurrencyType, Map<BigDecimal, BigDecimal>> balanceMap = this.getBalance().stream()
-                .collect(Collectors.groupingBy(Cash::getCurrencyType,
-                        Collectors.toMap(Cash::getDenomination, Cash::getQuantity)));
+        BigDecimal atmBalance = this.getBalance().stream()
+                .filter(c -> c.getCurrencyType() == type)
+                .map(c -> c.getQuantity().multiply(c.getDenomination()))
+                .reduce(BigDecimal::add)
+                .orElseThrow(() -> new QueryException("Cannot sum up the digits"));
 
-        Set<CurrencyType> availableTypes = balanceMap.keySet();
-        BigDecimal availableSum = BigDecimal.ZERO;
-
-        if (availableTypes.contains(type)) {
-            for (Map.Entry<BigDecimal, BigDecimal> entry : balanceMap.get(type).entrySet()) {
-                BigDecimal multiplySum = entry.getKey().multiply(entry.getValue());
-                availableSum = availableSum.add(multiplySum);
-            }
-        } else {
-            System.out.println("Sorry, the atm doesn't contain the type of currency you selected!");
-        }
-
-        if (sum.compareTo(availableSum) <= 0) {
+        if (sum.compareTo(atmBalance) <= 0) {
             passedCheck = true;
         } else {
             System.out.println("Unfortunately, this ATM doesn't have enough cash to continue with your transaction.");
         }
+
         return passedCheck;
     }
 
