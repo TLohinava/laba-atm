@@ -36,14 +36,13 @@ public class Utils {
                     break;
                 } else {
                     if (i <= 2) {
-                        transaction.setDateTime(LocalDateTime.now());
-                        transaction.setMessage("The pincode was entered incorrectly ");
-                        transaction.setResult(Transaction.Result.UNSUCCESSFULLY);
-                        TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
                         System.out.println(String.format("Sorry, the pincode is wrong, you still have %s chances!", (3 - i)));
                     } else {
+                        transaction.setDateTime(LocalDateTime.now());
+                        transaction.setMessage("The card is blocked");
+                        transaction.setResult(Transaction.Result.UNSUCCESSFULLY);
+                        TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
                         System.out.println("Sorry, your card is blocked!");
-
                         break;
                     }
                     correctData = false;
@@ -114,7 +113,7 @@ public class Utils {
             atm.withdraw(sum, scanner, inputType);
             card.withdraw(convertSum);
             transaction.setDateTime(LocalDateTime.now());
-            transaction.setMessage("Сash was withdrawn in the amount of " + sum);
+            transaction.setMessage("Cash was withdrawn in the amount of " + sum);
             transaction.setResult(Transaction.Result.SUCCESSFULLY);
             TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
             System.out.println("Please take your cash!");
