@@ -3,17 +3,23 @@ package com.solvd.atm;
 import com.solvd.atm.domain.Atm;
 import com.solvd.atm.domain.Card;
 import com.solvd.atm.domain.CurrencyType;
+import com.solvd.atm.domain.Transaction;
+import com.solvd.atm.domain.exception.QueryException;
 import com.solvd.atm.service.CashService;
+import com.solvd.atm.service.TransactionService;
 import com.solvd.atm.service.impl.CashServiceImpl;
+import com.solvd.atm.service.impl.TransactionServiceImpl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class Utils {
 
+
     public static void selectFunction(Atm atm, Card card) {
-        try(Scanner input = new Scanner(System.in)) {
+        try (Scanner input = new Scanner(System.in)) {
             boolean correctData = true;
 
             System.out.println("--------- Welcome to the ATM ---------");
@@ -88,17 +94,31 @@ public class Utils {
 
         boolean checkAtm = atm.checkBalance(sum, inputType);
         boolean checkCard = card.checkBalance(convertSum, cardType);
+        Transaction transaction = new Transaction();
         if (checkAtm && checkCard) {
             atm.withdraw(sum, scanner, inputType);
             card.withdraw(convertSum);
+            transaction.setDateTime(LocalDateTime.now());
+            transaction.setMessage("Сash was withdrawn in the amount of " + sum);
+            transaction.setResult(Transaction.Result.SUCCESSFULLY);
+            TransactionService transactionService = new TransactionServiceImpl();
+            transactionService.create(atm.getId(), card.getId(), transaction);
             System.out.println("Please take your cash!");
+        } else {
+            transaction.setDateTime(LocalDateTime.now());
+            transaction.setMessage("No cash was withdrawn " + sum);
+            transaction.setResult(Transaction.Result.UNSUCCESSFULLY);
+            TransactionService transactionService = new TransactionServiceImpl();
+            transactionService.create(atm.getId(), card.getId(), transaction);
         }
     }
 
     public static boolean checkMinSum(BigDecimal sum, CurrencyType currencyType) {
         CashService cashService = new CashServiceImpl();
-        if (sum.compareTo(cashService.getMinBanknote(currencyType).get()) < 0) {
-            System.out.println("Sorry, the min sum should be 5 and more");
+        BigDecimal bigDecimal = cashService.getMinBanknote(currencyType)
+                .orElseThrow(() -> new QueryException("Sorry, there is no such currency"));
+        if (sum.compareTo(bigDecimal) < 0) {
+            System.out.println("Sorry, the min sum should be " + bigDecimal + " and more");
             return false;
         }
         return true;

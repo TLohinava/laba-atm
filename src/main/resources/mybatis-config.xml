@@ -21,5 +21,6 @@
         <mapper resource="mapper/CardMapper.xml"/>
         <mapper resource="mapper/CashMapper.xml"/>
         <mapper resource="mapper/ClientMapper.xml"/>
+        <mapper resource="mapper/TransactionMapper.xml"/>
     </mappers>
 </configuration>

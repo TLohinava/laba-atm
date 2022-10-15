@@ -7,7 +7,11 @@ public class Transaction {
     private Long id;
     private LocalDateTime dateTime;
     private String message;
-    private String result;
+    private Result result;
+
+    public enum Result {
+        SUCCESSFULLY, UNSUCCESSFULLY
+    }
 
     public Long getId() {
         return id;
@@ -33,11 +37,11 @@ public class Transaction {
         this.message = message;
     }
 
-    public String getResult() {
+    public Result getResult() {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(Result result) {
         this.result = result;
     }
 }
