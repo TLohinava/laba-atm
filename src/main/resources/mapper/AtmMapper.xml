@@ -6,14 +6,15 @@
     </insert>
 
     <select id="read" resultMap="AtmResultMap">
-        select id, bank_id, address_id from atms where id = #{id}
+        select a.id as atm_id, a.bank_id as bank_id, a.address_id as address_id,
+        c.id as cash_id, c.currency_type as currency_type, c.denomination as denomination, c.quantity as quantity from atms a
+        left join cash c on a.id = c.atm_id where a.id = #{id}
     </select>
 
     <resultMap id="AtmResultMap" type="com.solvd.atm.domain.Atm" autoMapping="false">
-        <id property="id" column="id"/>
-        <association property= "balance" resultMap="com.solvd.atm.persistence.CashRepository.CashResultMap"/>
-        <association property="bank" resultMap="com.solvd.atm.persistence.BankRepository.BankResultMap"/>
+        <id property="id" column="atm_id"/>
         <association property="address" resultMap="com.solvd.atm.persistence.AddressRepository.AddressResultMap"/>
+        <collection property= "balance" resultMap="com.solvd.atm.persistence.CashRepository.CashResultMap"/>
     </resultMap>
 
     <update id="update" useGeneratedKeys="false">

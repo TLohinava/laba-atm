@@ -4,12 +4,13 @@ import com.solvd.atm.Utils;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Atm implements ICheck, IWithdraw, IConvert {
 
     private Long id;
     private Address address;
-    private Map<CurrencyType, Map<BigDecimal, BigDecimal>> balance;
+    private List<Cash> balance;
 
     public BigDecimal changeCurrencyType(BigDecimal sum, CurrencyType inputType, CurrencyType cardType) {
         return Utils.convertInputType(sum, inputType, cardType);
@@ -20,18 +21,27 @@ public class Atm implements ICheck, IWithdraw, IConvert {
     }
 
     public void withdraw(BigDecimal sum, Scanner scanner, CurrencyType type) {
-        Map<BigDecimal, BigDecimal> currentBalance = this.getBalance().get(type);
-        Utils.updateMap(currentBalance, sum, scanner);
+        Map<CurrencyType, Map<BigDecimal, BigDecimal>> balanceMap = this.getBalance().stream()
+                .collect(Collectors.groupingBy(Cash::getCurrencyType,
+                        Collectors.toMap(Cash::getDenomination, Cash::getQuantity)));
+        Map<BigDecimal, BigDecimal> currentBalance = balanceMap.get(type);
+        String option = Utils.chooseOptions(currentBalance, sum, scanner);
+        Utils.updateMap(this.id, option, type);
     }
 
     @Override
     public Boolean checkBalance(BigDecimal sum, CurrencyType type) {
         boolean passedCheck = false;
-        Set<CurrencyType> availableTypes = this.getBalance().keySet();
+
+        Map<CurrencyType, Map<BigDecimal, BigDecimal>> balanceMap = this.getBalance().stream()
+                .collect(Collectors.groupingBy(Cash::getCurrencyType,
+                        Collectors.toMap(Cash::getDenomination, Cash::getQuantity)));
+
+        Set<CurrencyType> availableTypes = balanceMap.keySet();
         BigDecimal availableSum = BigDecimal.ZERO;
 
         if (availableTypes.contains(type)) {
-            for (Map.Entry<BigDecimal, BigDecimal> entry : this.getBalance().get(type).entrySet()) {
+            for (Map.Entry<BigDecimal, BigDecimal> entry : balanceMap.get(type).entrySet()) {
                 BigDecimal multiplySum = entry.getKey().multiply(entry.getValue());
                 availableSum = availableSum.add(multiplySum);
             }
@@ -63,11 +73,11 @@ public class Atm implements ICheck, IWithdraw, IConvert {
         this.address = address;
     }
 
-    public Map<CurrencyType, Map<BigDecimal, BigDecimal>> getBalance() {
+    public List<Cash> getBalance() {
         return balance;
     }
 
-    public void setBalance(Map<CurrencyType, Map<BigDecimal, BigDecimal>> balance) {
+    public void setBalance(List<Cash> balance) {
         this.balance = balance;
     }
 

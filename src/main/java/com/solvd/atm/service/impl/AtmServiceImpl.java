@@ -1,6 +1,7 @@
 package com.solvd.atm.service.impl;
 
 import com.solvd.atm.domain.Atm;
+import com.solvd.atm.domain.exception.QueryException;
 import com.solvd.atm.persistence.AtmRepository;
 import com.solvd.atm.persistence.impl.AtmMapperImpl;
 import com.solvd.atm.service.AtmService;
@@ -23,7 +24,7 @@ public class AtmServiceImpl implements AtmService {
     @Override
     public Atm read(Long id) {
         return atmRepository.read(id)
-                        .orElseThrow();
+                .orElseThrow(() -> new QueryException("No atm found"));
     }
 
     @Override

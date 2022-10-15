@@ -10,7 +10,7 @@ import java.util.*;
 public class Utils {
 
     public static void selectFunction(Atm atm, Card card) {
-        try(Scanner input = new Scanner(System.in)) {
+        try (Scanner input = new Scanner(System.in)) {
             boolean correctData = true;
 
             System.out.println("--------- Welcome to the ATM ---------");
@@ -333,15 +333,19 @@ public class Utils {
         return chosenOption;
     }
 
-    public static void updateMap(Map<BigDecimal, BigDecimal> map, BigDecimal sum, Scanner scanner) {
-        String option = chooseOptions(map, sum, scanner);
+    public static void updateMap(Long atmId, String option, CurrencyType currencyType) {
         String[] optionArray = option.split(" ");
         String[] innerArray;
+        CashService cashService = new CashServiceImpl();
         for (String o : optionArray) {
             innerArray = o.split("x");
-            BigDecimal mapValue = map.get(new BigDecimal(innerArray[0]));
-            BigDecimal newValue = mapValue.subtract(new BigDecimal(innerArray[1]));
-            map.replace(new BigDecimal(innerArray[0]), newValue);
+            BigDecimal mapKey = new BigDecimal(innerArray[0]);
+            Cash cash = cashService.readQuantity(atmId, currencyType, mapKey);
+            BigDecimal cashQuantity = cash.getQuantity();
+            BigDecimal newCashQuantity = cashQuantity.subtract(new BigDecimal(innerArray[1]));
+            cash.setQuantity(newCashQuantity);
+
+            cashService.update(cash);
         }
     }
 }

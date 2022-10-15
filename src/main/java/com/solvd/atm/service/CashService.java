@@ -1,22 +1,19 @@
 package com.solvd.atm.service;
 
-import com.solvd.atm.domain.Cash;
-import com.solvd.atm.domain.CurrencyType;
+import com.solvd.atm.domain.*;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public interface CashService {
 
-    Map<CurrencyType, Map<BigDecimal, BigDecimal>> getMap();
-
     List<Cash> read();
+
+    Cash readQuantity(Long atmId, CurrencyType currencyType, BigDecimal denomination);
 
     void create(Long atmId, List<Cash> cashList);
 
-    void updateBatch(List<Cash> cashList);
+    void update(Cash cash);
 
     Optional<BigDecimal> getMinBanknote(CurrencyType currencyType);
 
