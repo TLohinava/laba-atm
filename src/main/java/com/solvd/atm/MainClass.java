@@ -191,9 +191,9 @@ public class MainClass {
 
 //        TransactionService transactionService = new TransactionServiceImpl();
 //        transactionService.create(1L, 1L, transaction);
-        Scanner scanner = new Scanner(System.in);
 
-        Utils.withdrawCash(atm1, card1, scanner);
+
+        Utils.selectFunction(atm1, card1);
 //        Utils.selectFunction(atm2, card2);
     }
 }

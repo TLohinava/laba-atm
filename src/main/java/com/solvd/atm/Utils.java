@@ -4,7 +4,6 @@ import com.solvd.atm.domain.Atm;
 import com.solvd.atm.domain.Card;
 import com.solvd.atm.domain.CurrencyType;
 import com.solvd.atm.domain.Transaction;
-import com.solvd.atm.domain.exception.QueryException;
 import com.solvd.atm.service.CashService;
 import com.solvd.atm.service.TransactionService;
 import com.solvd.atm.service.impl.CashServiceImpl;
@@ -17,6 +16,7 @@ import java.util.*;
 
 public class Utils {
 
+    private final static TransactionService TRANSACTION_SERVICE = new TransactionServiceImpl();
 
     public static void selectFunction(Atm atm, Card card) {
         try (Scanner input = new Scanner(System.in)) {
@@ -25,15 +25,25 @@ public class Utils {
             System.out.println("--------- Welcome to the ATM ---------");
             for (int i = 1; i <= 3; i++) {
                 System.out.println("Please enter your pincode:");
+                Transaction transaction = new Transaction();
                 Integer inputPin = input.nextInt();
                 if (inputPin.equals(card.getPin())) {
                     correctData = true;
+                    transaction.setDateTime(LocalDateTime.now());
+                    transaction.setMessage("The pincode entered ");
+                    transaction.setResult(Transaction.Result.SUCCESSFULLY);
+                    TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
                     break;
                 } else {
                     if (i <= 2) {
+                        transaction.setDateTime(LocalDateTime.now());
+                        transaction.setMessage("The pincode was entered incorrectly ");
+                        transaction.setResult(Transaction.Result.UNSUCCESSFULLY);
+                        TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
                         System.out.println(String.format("Sorry, the pincode is wrong, you still have %s chances!", (3 - i)));
                     } else {
                         System.out.println("Sorry, your card is blocked!");
+
                         break;
                     }
                     correctData = false;
@@ -52,6 +62,11 @@ public class Utils {
                         case 2:
                             System.out.println("---> Check balance");
                             BigDecimal currentBalance = card.getBalance();
+                            Transaction transaction = new Transaction();
+                            transaction.setDateTime(LocalDateTime.now());
+                            transaction.setMessage("The balance on the card is " + currentBalance);
+                            transaction.setResult(Transaction.Result.SUCCESSFULLY);
+                            TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
                             System.out.println(String.format("Balance on your card: %s", currentBalance));
                             break;
                         case 3:
@@ -101,22 +116,19 @@ public class Utils {
             transaction.setDateTime(LocalDateTime.now());
             transaction.setMessage("Сash was withdrawn in the amount of " + sum);
             transaction.setResult(Transaction.Result.SUCCESSFULLY);
-            TransactionService transactionService = new TransactionServiceImpl();
-            transactionService.create(atm.getId(), card.getId(), transaction);
+            TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
             System.out.println("Please take your cash!");
         } else {
             transaction.setDateTime(LocalDateTime.now());
             transaction.setMessage("No cash was withdrawn " + sum);
             transaction.setResult(Transaction.Result.UNSUCCESSFULLY);
-            TransactionService transactionService = new TransactionServiceImpl();
-            transactionService.create(atm.getId(), card.getId(), transaction);
+            TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
         }
     }
 
     public static boolean checkMinSum(BigDecimal sum, CurrencyType currencyType) {
         CashService cashService = new CashServiceImpl();
-        BigDecimal bigDecimal = cashService.getMinBanknote(currencyType)
-                .orElseThrow(() -> new QueryException("Sorry, there is no such currency"));
+        BigDecimal bigDecimal = cashService.getMinBanknote(currencyType);
         if (sum.compareTo(bigDecimal) < 0) {
             System.out.println("Sorry, the min sum should be " + bigDecimal + " and more");
             return false;
