@@ -106,14 +106,9 @@ public class Utils {
         CurrencyType cardType = card.getCurrencyType();
         BigDecimal convertSum = atm.changeCurrencyType(sum, inputType, cardType);
         Transaction transaction = new Transaction();
-        if (inputType == cardType) {
+        if (inputType != cardType) {
             transaction.setDateTime(LocalDateTime.now());
             transaction.setMessage("Cash " + sum + " " + inputType);
-            transaction.setResult(Transaction.Result.SUCCESSFULLY);
-            TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
-        } else {
-            transaction.setDateTime(LocalDateTime.now());
-            transaction.setMessage("Cash  " + sum + " " + inputType);
             transaction.setResult(Transaction.Result.SUCCESSFULLY);
             TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
         }
