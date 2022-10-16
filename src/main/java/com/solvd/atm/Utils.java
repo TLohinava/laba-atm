@@ -308,6 +308,7 @@ public class Utils {
         List<String> options = new ArrayList<>();
         String option = "";
         BigDecimal mapSum = new BigDecimal(0);
+        BigDecimal minKey = Collections.min(map.keySet());
 
         for (Map.Entry<BigDecimal, BigDecimal> entry : map.entrySet()) {
             BigDecimal amount = entry.getKey().multiply(entry.getValue());
@@ -320,15 +321,22 @@ public class Utils {
                 option = entry.getKey() + "x" + quantity;
 
                 while (rest.compareTo(BigDecimal.ZERO) > 0) {
-                    for (Map.Entry<BigDecimal, BigDecimal> subEntry : map.entrySet()) {
-                        BigDecimal subRest = rest.divide(subEntry.getKey(), RoundingMode.FLOOR);
-                        if (subRest.compareTo(BigDecimal.ZERO) > 0) {
-                            option += " " + subEntry.getKey() + "x" + subRest;
-                            rest = rest.subtract(subEntry.getKey().multiply(subRest));
+                    if (rest.remainder(minKey).compareTo(BigDecimal.ZERO) == 0) {
+                        for (Map.Entry<BigDecimal, BigDecimal> subEntry : map.entrySet()) {
+                            BigDecimal subRest = rest.divide(subEntry.getKey(), RoundingMode.FLOOR);
+                            if (subRest.compareTo(BigDecimal.ZERO) > 0) {
+                                option += " " + subEntry.getKey() + "x" + subRest;
+                                rest = rest.subtract(subEntry.getKey().multiply(subRest));
+                            }
                         }
+                    } else {
+                        rest = BigDecimal.ZERO;
+                        quantity = BigDecimal.ZERO;
                     }
                 }
-                options.add(option);
+                if (quantity.compareTo(BigDecimal.ZERO) > 0) {
+                    options.add(option);
+                }
             }
         }
 
