@@ -1,23 +1,21 @@
 package com.solvd.atm.persistence;
 
-import com.solvd.atm.domain.Cash;
-import com.solvd.atm.domain.CurrencyType;
+import com.solvd.atm.domain.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public interface CashRepository {
 
-    Map<CurrencyType, Map<BigDecimal, BigDecimal>> getMap();
+    List<Cash> read(Long atmId);
 
-    List<Cash> read();
+    Optional<Cash> readQuantity(@Param("atmId") Long atmId, @Param("currencyType") CurrencyType currencyType, @Param("denomination") BigDecimal denomination);
 
     void create(@Param("atmId") Long atmId, @Param("list") List<Cash> cashList);
 
     void update(Cash cash);
 
-    void updateBatch(List<Cash> cashList);
+    void delete();
 
 }

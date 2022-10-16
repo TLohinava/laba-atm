@@ -1,11 +1,10 @@
 package com.solvd.atm.service.impl;
 
 import com.solvd.atm.domain.Atm;
+import com.solvd.atm.domain.exception.QueryException;
 import com.solvd.atm.persistence.AtmRepository;
 import com.solvd.atm.persistence.impl.AtmMapperImpl;
 import com.solvd.atm.service.AtmService;
-
-import java.util.Optional;
 
 public class AtmServiceImpl implements AtmService {
 
@@ -23,8 +22,9 @@ public class AtmServiceImpl implements AtmService {
     }
 
     @Override
-    public Optional<Atm> read(Long id) {
-        return atmRepository.read(id);
+    public Atm read(Long id) {
+        return atmRepository.read(id)
+                .orElseThrow(() -> new QueryException("No atm found"));
     }
 
     @Override

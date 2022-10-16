@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace ="com.solvd.atm.persistence.CashRepository">
-    <select id="getMap" resultMap="CashResultMap">
-        select currency_type, denomination, quantity from cash
-    </select>
+<mapper namespace="com.solvd.atm.persistence.CashRepository">
 
     <select id="read" resultMap="CashResultMap">
-        select currency_type, denomination, quantity from cash
+        select c.id as cash_id, c.atm_id as atm_id,
+        c.currency_type as currency_type, c.denomination, c.quantity from cash c
+        where atm_id=#{atmId}
+    </select>
+
+    <select id="readQuantity" resultMap="CashResultMap">
+        select id as cash_id, currency_type, denomination, quantity from cash
+        where currency_type=#{currencyType} and denomination=#{denomination} and atm_id=#{atmId}
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
@@ -19,13 +23,17 @@
     <update id="update" useGeneratedKeys="false">
         update cash
         set quantity=#{quantity}
-        where denomination=#{denomination} and currency_type=#{currencyType};
+        where id=#{id};
     </update>
 
+    <delete id="delete">
+        delete from cash where quantity=0
+    </delete>
+
     <resultMap id="CashResultMap" type="com.solvd.atm.domain.Cash" autoMapping="false">
-        <id property="id" column="id"/>
-        <result property= "currencyType" column="currency_type"/>
-        <result property= "denomination" column="denomination"/>
-        <result property= "quantity" column="quantity"/>
+        <id property="id" column="cash_id"/>
+        <result property="currencyType" column="currency_type"/>
+        <result property="denomination" column="denomination"/>
+        <result property="quantity" column="quantity"/>
     </resultMap>
 </mapper>

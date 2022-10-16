@@ -1,16 +1,14 @@
 package com.solvd.atm.service.impl;
 
-import com.solvd.atm.domain.Cash;
-import com.solvd.atm.domain.CurrencyType;
+import com.solvd.atm.domain.*;
 import com.solvd.atm.domain.exception.QueryException;
 import com.solvd.atm.persistence.CashRepository;
 import com.solvd.atm.persistence.impl.CashMapperImpl;
 import com.solvd.atm.service.CashService;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 public class CashServiceImpl implements CashService {
 
@@ -21,13 +19,14 @@ public class CashServiceImpl implements CashService {
     }
 
     @Override
-    public Map<CurrencyType, Map<BigDecimal, BigDecimal>> getMap() {
-        return cashRepository.getMap();
+    public List<Cash> read(Long atmId) {
+        return cashRepository.read(atmId);
     }
 
     @Override
-    public List<Cash> read() {
-        return cashRepository.read();
+    public Cash readQuantity(Long atmId, CurrencyType currencyType, BigDecimal denomination) {
+        return cashRepository.readQuantity(atmId, currencyType, denomination)
+                .orElseThrow(() -> new QueryException("No cash found"));
     }
 
     @Override
@@ -36,16 +35,12 @@ public class CashServiceImpl implements CashService {
     }
 
     @Override
-    public void updateBatch(List<Cash> cashList) {
-        cashRepository.updateBatch(cashList);
+    public void update(Cash cash) {
+        cashRepository.update(cash);
     }
 
     @Override
-    public BigDecimal getMinBanknote(CurrencyType currencyType) {
-        return cashRepository.read().stream()
-                .filter(o -> o.getCurrencyType() == currencyType)
-                .min(Comparator.comparing(Cash::getDenomination))
-                .map(Cash::getDenomination)
-                .orElseThrow(() -> new QueryException("Sorry, there is no such currency"));
+    public void delete() {
+        cashRepository.delete();
     }
 }
