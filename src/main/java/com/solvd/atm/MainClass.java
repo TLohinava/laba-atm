@@ -1,16 +1,11 @@
 package com.solvd.atm;
 
 import com.solvd.atm.domain.*;
-import com.solvd.atm.service.AccountService;
-import com.solvd.atm.service.AddressService;
-import com.solvd.atm.service.BankService;
-import com.solvd.atm.service.ClientService;
-import com.solvd.atm.service.impl.AccountServiceImpl;
-import com.solvd.atm.service.impl.AddressServiceImpl;
-import com.solvd.atm.service.impl.BankServiceImpl;
-import com.solvd.atm.service.impl.ClientServiceImpl;
+import com.solvd.atm.service.*;
+import com.solvd.atm.service.impl.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class MainClass {
@@ -27,6 +22,7 @@ public class MainClass {
         address2.setHouse(32);
 
         Card card1 = new Card();
+        card1.setId(1L);
         card1.setNumber(5351402154561756L);
         card1.setPin(1234);
         card1.setBalance(BigDecimal.valueOf(350));
@@ -45,6 +41,7 @@ public class MainClass {
         card3.setCurrencyType(CurrencyType.valueOf("BYN"));
 
         Card card4 = new Card();
+        card4.setId(4L);
         card4.setNumber(5351402154555567L);
         card4.setPin(1267);
         card4.setBalance(BigDecimal.valueOf(1200));
@@ -129,6 +126,7 @@ public class MainClass {
         eurDenominations1.put(BigDecimal.valueOf(100), BigDecimal.valueOf(50));
 
         Atm atm1 = new Atm();
+        atm1.setId(1L);
         atm1.setAddress(address1);
         Map<CurrencyType, Map<BigDecimal, BigDecimal>> firstAtmBalance = new HashMap<>();
         firstAtmBalance.put(CurrencyType.valueOf("BYN"), bynDenominations1);
@@ -169,6 +167,11 @@ public class MainClass {
 
         List<Cash> cashList = List.of(cash, cash1, cash2);
 
+        Transaction transaction = new Transaction();
+        transaction.setDateTime(LocalDateTime.now());
+        transaction.setMessage("Cash has been withdrawn");
+        transaction.setResult(Transaction.Result.SUCCESSFULLY);
+
 //        CashService cs = new CashServiceImpl();
 //        cs.updateBatch(cashList);
 
@@ -186,6 +189,10 @@ public class MainClass {
 
 //        CashService cashService = new CashServiceImpl();
 //        System.out.println(cashService.getMinBanknote(CurrencyType.RUB));
+
+
+//        TransactionService transactionService = new TransactionServiceImpl();
+//        transactionService.create(1L, 1L, transaction);
 
         Utils.selectFunction(atm2, card2);
 

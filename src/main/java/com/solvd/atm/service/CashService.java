@@ -6,7 +6,6 @@ import com.solvd.atm.domain.CurrencyType;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public interface CashService {
 
@@ -18,6 +17,6 @@ public interface CashService {
 
     void updateBatch(List<Cash> cashList);
 
-    Optional<BigDecimal> getMinBanknote(CurrencyType currencyType);
+    BigDecimal getMinBanknote(CurrencyType currencyType);
 
 }
