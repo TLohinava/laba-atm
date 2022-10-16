@@ -2,15 +2,20 @@ package com.solvd.atm;
 
 import com.solvd.atm.domain.Atm;
 import com.solvd.atm.domain.Card;
+import com.solvd.atm.domain.Client;
 import com.solvd.atm.domain.CurrencyType;
+import com.solvd.atm.persistence.ConnectionPool;
 import com.solvd.atm.service.CashService;
 import com.solvd.atm.service.impl.CashServiceImpl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Connection;
 import java.util.*;
 
 public class Utils {
+
+    private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
 
     public static void selectFunction(Atm atm, Card card) {
         try(Scanner input = new Scanner(System.in)) {
@@ -346,5 +351,18 @@ public class Utils {
             BigDecimal newValue = mapValue.subtract(new BigDecimal(innerArray[1]));
             map.replace(new BigDecimal(innerArray[0]), newValue);
         }
+    }
+
+    public static Runnable synchronizeObjects(Client client, Atm atm, Card card){
+        Runnable synchronization = () -> {
+            synchronized(atm) {
+                synchronized(card) {
+                    Connection connection = CONNECTION_POOL.getConnection();
+                    client.getMenu(atm, card);
+                    CONNECTION_POOL.releaseConnection(connection);
+                }
+            }
+        };
+        return synchronization;
     }
 }
