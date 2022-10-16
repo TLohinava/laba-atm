@@ -190,11 +190,13 @@ public class MainClass {
 //        CashService cashService = new CashServiceImpl();
 //        System.out.println(cashService.getMinBanknote(CurrencyType.RUB));
 
+
 //        TransactionService transactionService = new TransactionServiceImpl();
 //        transactionService.create(1L, 1L, transaction);
 
+        Utils.selectFunction(atm2, card2);
 
-        Utils.selectFunction(atm1, card4);
-//        Utils.selectFunction(atm2, card2);
+        Thread thread1 = new Thread(Utils.synchronizeObjects(client1, atm1, card1));
+        thread1.start();
     }
 }

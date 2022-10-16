@@ -1,22 +1,21 @@
 package com.solvd.atm;
 
-import com.solvd.atm.domain.Atm;
-import com.solvd.atm.domain.Card;
-import com.solvd.atm.domain.CurrencyType;
-import com.solvd.atm.domain.Transaction;
-import com.solvd.atm.service.CashService;
-import com.solvd.atm.service.TransactionService;
-import com.solvd.atm.service.impl.CashServiceImpl;
-import com.solvd.atm.service.impl.TransactionServiceImpl;
+import com.solvd.atm.domain.*;
+import com.solvd.atm.persistence.ConnectionPool;
+import com.solvd.atm.service.*;
+import com.solvd.atm.service.impl.*;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.math.*;
 import java.time.LocalDateTime;
+import java.sql.Connection;
 import java.util.*;
 
 public class Utils {
 
     private final static TransactionService TRANSACTION_SERVICE = new TransactionServiceImpl();
+
+    private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
+
 
     public static void selectFunction(Atm atm, Card card) {
         try (Scanner input = new Scanner(System.in)) {
@@ -382,5 +381,18 @@ public class Utils {
             BigDecimal newValue = mapValue.subtract(new BigDecimal(innerArray[1]));
             map.replace(new BigDecimal(innerArray[0]), newValue);
         }
+    }
+
+    public static Runnable synchronizeObjects(Client client, Atm atm, Card card){
+        Runnable synchronization = () -> {
+            synchronized(atm) {
+                synchronized(card) {
+                    Connection connection = CONNECTION_POOL.getConnection();
+                    client.getMenu(atm, card);
+                    CONNECTION_POOL.releaseConnection(connection);
+                }
+            }
+        };
+        return synchronization;
     }
 }
