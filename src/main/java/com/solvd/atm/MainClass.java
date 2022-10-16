@@ -4,10 +4,6 @@ import com.solvd.atm.domain.*;
 import com.solvd.atm.service.*;
 import com.solvd.atm.service.impl.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.*;
-
 public class MainClass {
 
     public static void main(String[] args) {
@@ -15,15 +11,15 @@ public class MainClass {
         Atm atm = as.read(1l);
 
         CardService cs = new CardServiceImpl();
-        Card client = cs.read(2l);
+        Card card = cs.read(2l);
 
-        Utils.selectFunction(atm, client);
+        ClientService clientService = new ClientServiceImpl();
+        Client client = clientService.read(1l);
 
-//        TransactionService transactionService = new TransactionServiceImpl();
-//        transactionService.create(1L, 1L, transaction);
+        Utils.selectFunction(atm, card);
 
-        Thread thread1 = new Thread(Utils.synchronizeObjects(client1, atm1, card1));
-        thread1.start();
+//        Thread thread1 = new Thread(Utils.synchronizeObjects(client, atm, card));
+//        thread1.start();
 
     }
 }

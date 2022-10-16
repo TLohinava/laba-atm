@@ -17,7 +17,6 @@ public class Utils {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
 
-
     public static void selectFunction(Atm atm, Card card) {
         try (Scanner input = new Scanner(System.in)) {
             boolean correctData = true;
@@ -36,7 +35,7 @@ public class Utils {
                     break;
                 } else {
                     if (i <= 2) {
-                        System.out.println(String.format("Sorry, the pincode is wrong, you still have %s chances!", (3 - i)));
+                        System.out.printf("Sorry, the pincode is wrong, you still have %s chances!%n", (3 - i));
                     } else {
                         transaction.setDateTime(LocalDateTime.now());
                         transaction.setMessage("The card is blocked");
@@ -66,7 +65,7 @@ public class Utils {
                             transaction.setMessage("The balance on the card is " + currentBalance);
                             transaction.setResult(Transaction.Result.SUCCESSFULLY);
                             TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
-                            System.out.println(String.format("Balance on your card: %s", currentBalance));
+                            System.out.printf("Balance on your card: %s%n", currentBalance);
                             break;
                         case 3:
                             System.out.println("---> Exit");
@@ -333,24 +332,6 @@ public class Utils {
             }
         }
 
-        if (option.isEmpty() && sum.compareTo(mapSum) <= 0) {
-            Map<BigDecimal, BigDecimal> copyMap = new HashMap<>(map);
-            while (sum.compareTo(BigDecimal.ZERO) > 0) {
-                BigDecimal maxKey = Collections.max(copyMap.keySet());
-                BigDecimal maxValue = copyMap.get(maxKey);
-
-                if (sum.compareTo(maxKey) >= 0) {
-                    BigDecimal val = sum.divide(maxKey, RoundingMode.FLOOR);
-                    if (val.compareTo(maxValue) >= 0) {
-                        val = maxValue;
-                    }
-                    option += " " + maxKey + "x" + val;
-                    sum = sum.subtract(maxKey.multiply(val));
-                    copyMap.remove(maxKey);
-                }
-            }
-            options.add(option.trim());
-        }
         System.out.println("Available option for the entered sum:");
         options.forEach(r -> System.out.println((options.indexOf(r) + 1) + ". " + r));
         return options;
@@ -370,10 +351,10 @@ public class Utils {
         return chosenOption;
     }
 
-    public static Runnable synchronizeObjects(Client client, Atm atm, Card card){
+    public static Runnable synchronizeObjects(Client client, Atm atm, Card card) {
         Runnable synchronization = () -> {
-            synchronized(atm) {
-                synchronized(card) {
+            synchronized (atm) {
+                synchronized (card) {
                     Connection connection = CONNECTION_POOL.getConnection();
                     client.getMenu(atm, card);
                     CONNECTION_POOL.releaseConnection(connection);

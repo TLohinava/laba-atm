@@ -1,8 +1,7 @@
 package com.solvd.atm.persistence.impl;
 
 import com.solvd.atm.domain.Atm;
-import com.solvd.atm.persistence.AtmRepository;
-import com.solvd.atm.persistence.MyBatisConfig;
+import com.solvd.atm.persistence.*;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.Optional;

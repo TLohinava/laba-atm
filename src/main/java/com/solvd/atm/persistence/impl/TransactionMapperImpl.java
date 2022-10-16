@@ -1,8 +1,7 @@
 package com.solvd.atm.persistence.impl;
 
 import com.solvd.atm.domain.Transaction;
-import com.solvd.atm.persistence.MyBatisConfig;
-import com.solvd.atm.persistence.TransactionRepository;
+import com.solvd.atm.persistence.*;
 import org.apache.ibatis.session.SqlSession;
 
 public class TransactionMapperImpl implements TransactionRepository {

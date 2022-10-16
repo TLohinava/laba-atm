@@ -2,8 +2,6 @@ package com.solvd.atm.service;
 
 import com.solvd.atm.domain.Account;
 
-import java.util.Optional;
-
 public interface AccountService {
 
     Account create(Account account);

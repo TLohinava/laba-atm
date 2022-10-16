@@ -1,7 +1,6 @@
 package com.solvd.atm.persistence;
 
-import com.solvd.atm.domain.Bank;
-import com.solvd.atm.domain.Client;
+import com.solvd.atm.domain.*;
 
 import java.util.Optional;
 
