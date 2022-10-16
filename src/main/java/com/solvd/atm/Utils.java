@@ -1,13 +1,22 @@
 package com.solvd.atm;
 
 import com.solvd.atm.domain.*;
-import com.solvd.atm.service.CashService;
-import com.solvd.atm.service.impl.CashServiceImpl;
+
+import com.solvd.atm.persistence.ConnectionPool;
+import com.solvd.atm.service.*;
+import com.solvd.atm.service.impl.*;
 
 import java.math.*;
+import java.time.LocalDateTime;
+import java.sql.Connection;
 import java.util.*;
 
 public class Utils {
+
+    private final static TransactionService TRANSACTION_SERVICE = new TransactionServiceImpl();
+
+    private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
+
 
     public static void selectFunction(Atm atm, Card card) {
         try (Scanner input = new Scanner(System.in)) {
@@ -16,14 +25,23 @@ public class Utils {
             System.out.println("--------- Welcome to the ATM ---------");
             for (int i = 1; i <= 3; i++) {
                 System.out.println("Please enter your pincode:");
+                Transaction transaction = new Transaction();
                 Integer inputPin = input.nextInt();
                 if (inputPin.equals(card.getPin())) {
                     correctData = true;
+                    transaction.setDateTime(LocalDateTime.now());
+                    transaction.setMessage("The pincode entered ");
+                    transaction.setResult(Transaction.Result.SUCCESSFULLY);
+                    TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
                     break;
                 } else {
                     if (i <= 2) {
                         System.out.println(String.format("Sorry, the pincode is wrong, you still have %s chances!", (3 - i)));
                     } else {
+                        transaction.setDateTime(LocalDateTime.now());
+                        transaction.setMessage("The card is blocked");
+                        transaction.setResult(Transaction.Result.UNSUCCESSFULLY);
+                        TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
                         System.out.println("Sorry, your card is blocked!");
                         break;
                     }
@@ -43,6 +61,11 @@ public class Utils {
                         case 2:
                             System.out.println("---> Check balance");
                             BigDecimal currentBalance = card.getBalance();
+                            Transaction transaction = new Transaction();
+                            transaction.setDateTime(LocalDateTime.now());
+                            transaction.setMessage("The balance on the card is " + currentBalance);
+                            transaction.setResult(Transaction.Result.SUCCESSFULLY);
+                            TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
                             System.out.println(String.format("Balance on your card: %s", currentBalance));
                             break;
                         case 3:
@@ -81,13 +104,28 @@ public class Utils {
         BigDecimal sum = enterSum(atm, scanner, inputType);
         CurrencyType cardType = card.getCurrencyType();
         BigDecimal convertSum = atm.changeCurrencyType(sum, inputType, cardType);
-
+        Transaction transaction = new Transaction();
+        if (inputType != cardType) {
+            transaction.setDateTime(LocalDateTime.now());
+            transaction.setMessage("Cash " + sum + " " + inputType);
+            transaction.setResult(Transaction.Result.SUCCESSFULLY);
+            TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
+        }
         boolean checkAtm = atm.checkBalance(sum, inputType);
         boolean checkCard = card.checkBalance(convertSum, cardType);
         if (checkAtm && checkCard) {
             atm.withdraw(sum, scanner, inputType);
             card.withdraw(convertSum);
+            transaction.setDateTime(LocalDateTime.now());
+            transaction.setMessage("Cash was withdrawn in the amount of " + convertSum + " " + cardType);
+            transaction.setResult(Transaction.Result.SUCCESSFULLY);
+            TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
             System.out.println("Please take your cash!");
+        } else {
+            transaction.setDateTime(LocalDateTime.now());
+            transaction.setMessage("No cash was withdrawn " + sum);
+            transaction.setResult(Transaction.Result.UNSUCCESSFULLY);
+            TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
         }
     }
 
@@ -330,5 +368,18 @@ public class Utils {
             chooseOptions(map, sum, scanner);
         }
         return chosenOption;
+    }
+
+    public static Runnable synchronizeObjects(Client client, Atm atm, Card card){
+        Runnable synchronization = () -> {
+            synchronized(atm) {
+                synchronized(card) {
+                    Connection connection = CONNECTION_POOL.getConnection();
+                    client.getMenu(atm, card);
+                    CONNECTION_POOL.releaseConnection(connection);
+                }
+            }
+        };
+        return synchronization;
     }
 }

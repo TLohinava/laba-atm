@@ -5,6 +5,7 @@ import com.solvd.atm.domain.*;
 import java.math.BigDecimal;
 import java.util.*;
 
+
 public interface CashService {
 
     List<Cash> read(Long atmId);
