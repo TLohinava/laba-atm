@@ -8,12 +8,14 @@ import java.util.*;
 
 public interface CashRepository {
 
-    List<Cash> read();
+    List<Cash> read(Long atmId);
 
     Optional<Cash> readQuantity(@Param("atmId") Long atmId, @Param("currencyType") CurrencyType currencyType, @Param("denomination") BigDecimal denomination);
 
     void create(@Param("atmId") Long atmId, @Param("list") List<Cash> cashList);
 
     void update(Cash cash);
+
+    void delete();
 
 }

@@ -18,8 +18,8 @@ public class CashServiceImpl implements CashService {
     }
 
     @Override
-    public List<Cash> read() {
-        return cashRepository.read();
+    public List<Cash> read(Long atmId) {
+        return cashRepository.read(atmId);
     }
 
     @Override
@@ -39,10 +39,7 @@ public class CashServiceImpl implements CashService {
     }
 
     @Override
-    public Optional<BigDecimal> getMinBanknote(CurrencyType currencyType) {
-        return cashRepository.read().stream()
-                .filter(o -> o.getCurrencyType() == currencyType)
-                .min(Comparator.comparing(Cash::getDenomination))
-                .map(Cash::getDenomination);
+    public void delete() {
+        cashRepository.delete();
     }
 }

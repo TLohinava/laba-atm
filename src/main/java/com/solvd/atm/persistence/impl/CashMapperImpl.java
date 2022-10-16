@@ -10,10 +10,10 @@ import java.util.*;
 public class CashMapperImpl implements CashRepository {
 
     @Override
-    public List<Cash> read() {
+    public List<Cash> read(Long atmId) {
         try (SqlSession session = MyBatisConfig.getSqlSessionFactory().openSession(true)) {
             CashRepository mapper = session.getMapper(CashRepository.class);
-            return mapper.read();
+            return mapper.read(atmId);
         }
     }
 
@@ -38,6 +38,14 @@ public class CashMapperImpl implements CashRepository {
         try (SqlSession session = MyBatisConfig.getSqlSessionFactory().openSession(true)) {
             CashRepository mapper = session.getMapper(CashRepository.class);
             mapper.update(cash);
+        }
+    }
+
+    @Override
+    public void delete() {
+        try (SqlSession session = MyBatisConfig.getSqlSessionFactory().openSession(true)) {
+            CashRepository mapper = session.getMapper(CashRepository.class);
+            mapper.delete();
         }
     }
 }

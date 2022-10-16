@@ -5,6 +5,7 @@
     <select id="read" resultMap="CashResultMap">
         select c.id as cash_id, c.atm_id as atm_id,
         c.currency_type as currency_type, c.denomination, c.quantity from cash c
+        where atm_id=#{atmId}
     </select>
 
     <select id="readQuantity" resultMap="CashResultMap">
@@ -24,6 +25,10 @@
         set quantity=#{quantity}
         where id=#{id};
     </update>
+
+    <delete id="delete">
+        delete from cash where quantity=0
+    </delete>
 
     <resultMap id="CashResultMap" type="com.solvd.atm.domain.Cash" autoMapping="false">
         <id property="id" column="cash_id"/>

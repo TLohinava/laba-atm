@@ -61,25 +61,24 @@ public class Utils {
         }
     }
 
-    public static BigDecimal enterSum(Scanner scanner, CurrencyType currencyType) {
+    public static BigDecimal enterSum(Atm atm, Scanner scanner, CurrencyType currencyType) {
         BigDecimal sum;
         System.out.println("Please enter the required sum: ");
         if (scanner.hasNextBigDecimal()) {
             sum = scanner.nextBigDecimal();
-            if (!checkMinSum(sum, currencyType)) {
-                System.out.println("Sorry the sum is less than min");
-                sum = enterSum(scanner, currencyType);
+            if (!checkMinSum(atm, sum, currencyType)) {
+                sum = enterSum(atm, scanner, currencyType);
             }
         } else {
             System.out.println("Sorry, the sum should be numeric. ");
-            sum = enterSum(scanner, currencyType);
+            sum = enterSum(atm, scanner, currencyType);
         }
         return sum;
     }
 
     public static void withdrawCash(Atm atm, Card card, Scanner scanner) {
         CurrencyType inputType = selectCurrencyType(scanner);
-        BigDecimal sum = enterSum(scanner, inputType);
+        BigDecimal sum = enterSum(atm, scanner, inputType);
         CurrencyType cardType = card.getCurrencyType();
         BigDecimal convertSum = atm.changeCurrencyType(sum, inputType, cardType);
 
@@ -92,10 +91,10 @@ public class Utils {
         }
     }
 
-    public static boolean checkMinSum(BigDecimal sum, CurrencyType currencyType) {
-        CashService cashService = new CashServiceImpl();
-        if (sum.compareTo(cashService.getMinBanknote(currencyType).get()) < 0) {
-            System.out.println("Sorry, the min sum should be 5 and more");
+    public static boolean checkMinSum(Atm atm, BigDecimal sum, CurrencyType currencyType) {
+        BigDecimal minBanknote = atm.getMinBanknote(currencyType);
+        if (sum.compareTo(minBanknote) < 0) {
+            System.out.printf("Sorry, the min sum should be %s and more%n", minBanknote);
             return false;
         }
         return true;
@@ -331,21 +330,5 @@ public class Utils {
             chooseOptions(map, sum, scanner);
         }
         return chosenOption;
-    }
-
-    public static void updateMap(Long atmId, String option, CurrencyType currencyType) {
-        String[] optionArray = option.split(" ");
-        String[] innerArray;
-        CashService cashService = new CashServiceImpl();
-        for (String o : optionArray) {
-            innerArray = o.split("x");
-            BigDecimal mapKey = new BigDecimal(innerArray[0]);
-            Cash cash = cashService.readQuantity(atmId, currencyType, mapKey);
-            BigDecimal cashQuantity = cash.getQuantity();
-            BigDecimal newCashQuantity = cashQuantity.subtract(new BigDecimal(innerArray[1]));
-            cash.setQuantity(newCashQuantity);
-
-            cashService.update(cash);
-        }
     }
 }

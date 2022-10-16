@@ -11,7 +11,7 @@ public class MainClass {
         Atm atm = as.read(1l);
 
         CardService cs = new CardServiceImpl();
-        Card client = cs.read(4l);
+        Card client = cs.read(2l);
 
         Utils.selectFunction(atm, client);
     }

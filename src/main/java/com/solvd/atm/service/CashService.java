@@ -7,7 +7,7 @@ import java.util.*;
 
 public interface CashService {
 
-    List<Cash> read();
+    List<Cash> read(Long atmId);
 
     Cash readQuantity(Long atmId, CurrencyType currencyType, BigDecimal denomination);
 
@@ -15,6 +15,6 @@ public interface CashService {
 
     void update(Cash cash);
 
-    Optional<BigDecimal> getMinBanknote(CurrencyType currencyType);
+    void delete();
 
 }
