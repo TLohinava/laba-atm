@@ -22,29 +22,34 @@ public class Utils {
             boolean correctData = true;
 
             System.out.println("--------- Welcome to the ATM ---------");
-            for (int i = 1; i <= 3; i++) {
-                System.out.println("Please enter your pincode:");
-                Transaction transaction = new Transaction();
-                Integer inputPin = input.nextInt();
-                if (inputPin.equals(card.getPin())) {
-                    correctData = true;
-                    transaction.setDateTime(LocalDateTime.now());
-                    transaction.setMessage("The pincode entered ");
-                    transaction.setResult(Transaction.Result.SUCCESSFULLY);
-                    TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
-                    break;
-                } else {
-                    if (i <= 2) {
-                        System.out.printf("Sorry, the pincode is wrong, you still have %s chances!%n", (3 - i));
-                    } else {
+            if(TRANSACTION_SERVICE.read(card.getId())) {
+                System.out.println("Your card is blocked, please call the bank to unblock it.");
+                correctData = false;
+            } else {
+                for (int i = 1; i <= 3; i++) {
+                    System.out.println("Please enter your pincode:");
+                    Transaction transaction = new Transaction();
+                    Integer inputPin = input.nextInt();
+                    if (inputPin.equals(card.getPin())) {
+                        correctData = true;
                         transaction.setDateTime(LocalDateTime.now());
-                        transaction.setMessage("The card is blocked");
-                        transaction.setResult(Transaction.Result.UNSUCCESSFULLY);
+                        transaction.setMessage("The pincode entered ");
+                        transaction.setResult(Transaction.Result.SUCCESSFULLY);
                         TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
-                        System.out.println("Sorry, your card is blocked!");
                         break;
+                    } else {
+                        if (i <= 2) {
+                            System.out.printf("Sorry, the pincode is wrong, you still have %s chances!%n", (3 - i));
+                        } else {
+                            transaction.setDateTime(LocalDateTime.now());
+                            transaction.setMessage("The card is blocked");
+                            transaction.setResult(Transaction.Result.UNSUCCESSFULLY);
+                            TRANSACTION_SERVICE.create(atm.getId(), card.getId(), transaction);
+                            System.out.println("Sorry, your card is blocked!");
+                            break;
+                        }
+                        correctData = false;
                     }
-                    correctData = false;
                 }
             }
             if (correctData) {

@@ -5,4 +5,10 @@
         insert into transactions (atm_id, card_id, date_time, message, result)
         values (#{atmId}, #{cardId}, #{transaction.dateTime}, #{transaction.message}, #{transaction.result})
     </insert>
+
+    <select id="read" resultType="boolean">
+        select count(*)
+        from transactions
+        where card_id=#{cardId} and message like '%blocked%';
+    </select>
 </mapper>

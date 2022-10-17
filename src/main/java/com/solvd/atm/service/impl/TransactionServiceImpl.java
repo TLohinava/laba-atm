@@ -19,4 +19,9 @@ public class TransactionServiceImpl implements TransactionService {
         transactionRepository.create(atmId, cardId, transaction);
         return transaction;
     }
+
+    @Override
+    public boolean read(Long cardId) {
+        return transactionRepository.read(cardId);
+    }
 }

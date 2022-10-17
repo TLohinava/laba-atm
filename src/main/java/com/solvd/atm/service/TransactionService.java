@@ -6,4 +6,6 @@ public interface TransactionService {
 
     Transaction create(Long atmId, Long cardId, Transaction transaction);
 
+    boolean read(Long cardId);
+
 }

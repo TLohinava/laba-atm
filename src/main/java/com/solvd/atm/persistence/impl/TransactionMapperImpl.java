@@ -13,4 +13,12 @@ public class TransactionMapperImpl implements TransactionRepository {
             transactionRepository.create(atmId, cardId, transaction);
         }
     }
+
+    @Override
+    public boolean read(Long cardId) {
+        try (SqlSession sqlSession = MyBatisConfig.getSqlSessionFactory().openSession(true)) {
+            TransactionRepository transactionRepository = sqlSession.getMapper(TransactionRepository.class);
+            return transactionRepository.read(cardId);
+        }
+    }
 }

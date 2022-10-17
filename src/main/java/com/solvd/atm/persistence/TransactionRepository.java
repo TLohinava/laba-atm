@@ -7,4 +7,6 @@ public interface TransactionRepository {
 
     void create(@Param("atmId") Long atmId, @Param("cardId") Long cardId, @Param("transaction") Transaction transaction);
 
+    boolean read(Long cardId);
+
 }
