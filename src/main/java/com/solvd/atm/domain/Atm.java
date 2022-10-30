@@ -39,8 +39,7 @@ public class Atm implements ICheck, IWithdraw, IConvert {
         BigDecimal atmBalance = this.getBalance().stream()
                 .filter(c -> c.getCurrencyType().equals(type))
                 .map(c -> c.getQuantity().multiply(c.getDenomination()))
-                .reduce(BigDecimal::add)
-                .orElseThrow(() -> new QueryException("Cannot sum up the digits"));
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         boolean divisionCheck = this.getBalance().stream()
                 .filter(c -> c.getCurrencyType().equals(type))
